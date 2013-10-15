@@ -1,0 +1,41 @@
+{
+  "name": "underscore-plus",
+  "version": "0.0.0",
+  "description": "Underscore plus additional utilities",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/atom/underscore-plus/raw/master/LICENSE.md"
+    }
+  ],
+  "main": "./lib/underscore-plus.js",
+  "scripts": {
+    "prepublish": "grunt clean coffee lint",
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atom/underscore-plus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/atom/underscore-plus/issues"
+  },
+  "homepage": "http://atom.github.io/underscore-plus",
+  "keywords": [
+    "underscore"
+  ],
+  "dependencies": {
+    "underscore": "~1.5.2",
+    "tantamount": "~0.5.0"
+  },
+  "devDependencies": {
+    "jasmine-focused": "~0.15.0",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-cli": "~0.1.8",
+    "grunt": "~0.4.1",
+    "grunt-shell": "~0.2.2",
+    "grunt-coffeelint": "0.0.6",
+    "temp": "~0.5.0",
+    "rimraf": "~2.1.4"
+  }
+}
