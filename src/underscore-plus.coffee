@@ -59,7 +59,7 @@ plus =
     string.indexOf(suffix, string.length - suffix.length) isnt -1
 
   escapeAttribute: (string) ->
-    string.replace(/"/g, '&quot;').replace(/\n/g, '')
+    string.replace(/"/g, '&quot;').replace(/\n/g, '').replace(/\\/g, '-')
 
   escapeRegExp: (string) ->
     string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
