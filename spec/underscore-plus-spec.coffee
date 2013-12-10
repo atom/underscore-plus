@@ -77,6 +77,16 @@ describe "underscore extensions", ->
         expect(_.humanizeEventName('space:final-frontier')).toBe 'Space: Final Frontier'
         expect(_.humanizeEventName('star-trek:the-next-generation')).toBe 'Star Trek: The Next Generation'
 
+  describe "_.humanizeKeystroke(keystroke)", ->
+    it "replaces single keystroke", ->
+      expect(_.humanizeKeystroke('cmd-O')).toEqual '⌘⇧O'
+      expect(_.humanizeKeystroke('cmd-shift-up')).toEqual '⌘⇧↑'
+      expect(_.humanizeKeystroke('cmd-option-down')).toEqual '⌘⌥↓'
+      expect(_.humanizeKeystroke('cmd-option-left')).toEqual '⌘⌥←'
+      expect(_.humanizeKeystroke('cmd-option-right')).toEqual '⌘⌥→'
+      expect(_.humanizeKeystroke('cmd-o')).toEqual '⌘O'
+      expect(_.humanizeKeystroke('ctrl-2')).toEqual '⌃2'
+
   describe "_.deepExtend(objects...)", ->
     it "copies all key/values from each object into a new object", ->
       first =
