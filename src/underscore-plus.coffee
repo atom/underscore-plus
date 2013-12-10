@@ -1,6 +1,18 @@
 _ = require 'underscore'
 isEqual = require 'tantamount'
 
+modifierKeyMap =
+  cmd: '⌘'
+  ctrl: '⌃'
+  alt: '⌥'
+  option: '⌥'
+  shift: '⇧'
+  enter: '⏎'
+  left: '←'
+  right: '→'
+  up: '↑'
+  down: '↓'
+
 plus =
   adviseBefore: (object, methodName, advice) ->
     original = object[methodName]
@@ -72,6 +84,23 @@ plus =
     eventDoc ?= plus.undasherize(event)
 
     "#{namespaceDoc}: #{eventDoc}"
+
+  humanizeKey: (key) ->
+    return key unless key
+    if modifierKeyMap[key]
+      modifierKeyMap[key]
+    else if key.length == 1 and key == key.toUpperCase() and key.toUpperCase() != key.toLowerCase()
+      [modifierKeyMap.shift, key.toUpperCase()]
+    else if key.length == 1
+      key.toUpperCase()
+    else
+      key
+
+  humanizeKeystroke: (keystroke) ->
+    return keystroke unless keystroke
+    keys = keystroke.split('-')
+    keys = _.flatten(plus.humanizeKey(key) for key in keys)
+    keys.join('')
 
   isSubset: (potentialSubset, potentialSuperset) ->
     _.every potentialSubset, (element) -> _.include(potentialSuperset, element)
