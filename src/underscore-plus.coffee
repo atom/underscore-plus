@@ -86,6 +86,7 @@ plus =
     "#{namespaceDoc}: #{eventDoc}"
 
   humanizeKey: (key) ->
+    return key unless key
     if modifierKeyMap[key]
       modifierKeyMap[key]
     else if key.length == 1 and key == key.toUpperCase() and key.toUpperCase() != key.toLowerCase()
@@ -96,6 +97,7 @@ plus =
       key
 
   humanizeKeystroke: (keystroke) ->
+    return keystroke unless keystroke
     keys = keystroke.split('-')
     keys = _.flatten(plus.humanizeKey(key) for key in keys)
     keys.join('')

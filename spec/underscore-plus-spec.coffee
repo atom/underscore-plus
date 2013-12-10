@@ -87,6 +87,11 @@ describe "underscore extensions", ->
       expect(_.humanizeKeystroke('cmd-o')).toEqual '⌘O'
       expect(_.humanizeKeystroke('ctrl-2')).toEqual '⌃2'
 
+    it "handles junk input", ->
+      expect(_.humanizeKeystroke()).toEqual undefined
+      expect(_.humanizeKeystroke(null)).toEqual null
+      expect(_.humanizeKeystroke('')).toEqual ''
+
   describe "_.deepExtend(objects...)", ->
     it "copies all key/values from each object into a new object", ->
       first =
