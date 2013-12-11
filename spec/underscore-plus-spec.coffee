@@ -86,6 +86,13 @@ describe "underscore extensions", ->
       expect(_.humanizeKeystroke('cmd-option-right')).toEqual '⌘⌥→'
       expect(_.humanizeKeystroke('cmd-o')).toEqual '⌘O'
       expect(_.humanizeKeystroke('ctrl-2')).toEqual '⌃2'
+      expect(_.humanizeKeystroke('cmd-space')).toEqual '⌘space'
+
+    it "replaces multiple keystrokes", ->
+      expect(_.humanizeKeystroke('cmd-O cmd-n')).toEqual '⌘⇧O ⌘N'
+
+    it "formats function keys", ->
+      expect(_.humanizeKeystroke('cmd-f2')).toEqual '⌘F2'
 
     it "handles junk input", ->
       expect(_.humanizeKeystroke()).toEqual undefined

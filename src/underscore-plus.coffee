@@ -91,16 +91,20 @@ plus =
       modifierKeyMap[key]
     else if key.length == 1 and key == key.toUpperCase() and key.toUpperCase() != key.toLowerCase()
       [modifierKeyMap.shift, key.toUpperCase()]
-    else if key.length == 1
+    else if key.length == 1 or /f[0-9]{1,2}/.test(key)
       key.toUpperCase()
     else
       key
 
   humanizeKeystroke: (keystroke) ->
     return keystroke unless keystroke
-    keys = keystroke.split('-')
-    keys = _.flatten(plus.humanizeKey(key) for key in keys)
-    keys.join('')
+    keystrokes = keystroke.split(' ')
+    humanizedKeystrokes = []
+    for keystroke in keystrokes
+      keys = keystroke.split('-')
+      keys = _.flatten(plus.humanizeKey(key) for key in keys)
+      humanizedKeystrokes.push(keys.join(''))
+    humanizedKeystrokes.join(' ')
 
   isSubset: (potentialSubset, potentialSuperset) ->
     _.every potentialSubset, (element) -> _.include(potentialSuperset, element)
