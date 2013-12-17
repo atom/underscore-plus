@@ -2,16 +2,16 @@ _ = require 'underscore'
 isEqual = require 'tantamount'
 
 modifierKeyMap =
-  cmd: '⌘'
-  ctrl: '⌃'
-  alt: '⌥'
-  option: '⌥'
-  shift: '⇧'
-  enter: '⏎'
-  left: '←'
-  right: '→'
-  up: '↑'
-  down: '↓'
+  cmd: '\u2318'
+  ctrl: '\u2303'
+  alt: '\u2325'
+  option: '\u2325'
+  shift: '\u21e7'
+  enter: '\u23ce'
+  left: '\u2190'
+  right: '\u2192'
+  up: '\u2191'
+  down: '\u2193'
 
 plus =
   adviseBefore: (object, methodName, advice) ->
