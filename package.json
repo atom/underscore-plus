@@ -25,8 +25,7 @@
     "underscore"
   ],
   "dependencies": {
-    "underscore": "~1.5.2",
-    "tantamount": "~0.6.0"
+    "underscore": "~1.5.2"
   },
   "devDependencies": {
     "jasmine-focused": "~0.15.0",

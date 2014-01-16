@@ -137,3 +137,55 @@ describe "underscore extensions", ->
       expect(_.isSubset([], [1])).toBeTruthy()
       expect(_.isSubset([], [])).toBeTruthy()
       expect(_.isSubset([1, 2], [2, 3])).toBeFalsy()
+
+  describe '_.isEqual(a, b)', ->
+    it 'returns true when the elements are equal, false otherwise', ->
+      expect(_.isEqual(null, null)).toBe true
+      expect(_.isEqual('test', 'test')).toBe true
+      expect(_.isEqual(3, 3)).toBe true
+      expect(_.isEqual({a: 'b'}, {a: 'b'})).toBe true
+      expect(_.isEqual([1, 'a'], [1, 'a'])).toBe true
+
+      expect(_.isEqual(null, 'test')).toBe false
+      expect(_.isEqual(3, 4)).toBe false
+      expect(_.isEqual({a: 'b'}, {a: 'c'})).toBe false
+      expect(_.isEqual({a: 'b'}, {a: 'b', c: 'd'})).toBe false
+      expect(_.isEqual([1, 'a'], [2])).toBe false
+      expect(_.isEqual([1, 'a'], [1, 'b'])).toBe false
+
+      a = isEqual: (other) -> other is b
+      b = isEqual: (other) -> other is 'test'
+      expect(_.isEqual(a, null)).toBe false
+      expect(_.isEqual(a, 'test')).toBe false
+      expect(_.isEqual(a, b)).toBe true
+      expect(_.isEqual(null, b)).toBe false
+      expect(_.isEqual('test', b)).toBe true
+
+      expect(_.isEqual(/a/, /a/g)).toBe false
+      expect(_.isEqual(/a/, /b/)).toBe false
+      expect(_.isEqual(/a/gi, /a/gi)).toBe true
+
+    it "calls custom equality methods with stacks so they can participate in cycle-detection", ->
+      class X
+        isEqual: (b, aStack, bStack) ->
+          _.isEqual(@y, b.y, aStack, bStack)
+
+      class Y
+        isEqual: (b, aStack, bStack) ->
+          _.isEqual(@x, b.x, aStack, bStack)
+
+      x1 = new X
+      y1 = new Y
+      x1.y = y1
+      y1.x = x1
+
+      x2 = new X
+      y2 = new Y
+      x2.y = y2
+      y2.x = x2
+
+      expect(_.isEqual(x1, x2)).toBe true
+
+    it "only accepts arrays as stack arguments to avoid accidentally calling with other objects", ->
+      expect(-> _.isEqual({}, {}, "junk")).not.toThrow()
+      expect(-> _.isEqual({}, {}, [], "junk")).not.toThrow()
