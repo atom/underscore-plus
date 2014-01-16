@@ -1,5 +1,4 @@
 _ = require 'underscore'
-isEqual = require 'tantamount'
 
 modifierKeyMap =
   cmd: '\u2318'
