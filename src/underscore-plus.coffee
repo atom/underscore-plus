@@ -23,6 +23,8 @@ plus =
     string.replace /[_-]+(\w)/g, (m) -> m[1].toUpperCase()
 
   capitalize: (word) ->
+    return word unless word
+
     if word.toLowerCase() is 'github'
       'GitHub'
     else

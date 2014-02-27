@@ -189,3 +189,11 @@ describe "underscore extensions", ->
     it "only accepts arrays as stack arguments to avoid accidentally calling with other objects", ->
       expect(-> _.isEqual({}, {}, "junk")).not.toThrow()
       expect(-> _.isEqual({}, {}, [], "junk")).not.toThrow()
+
+  describe ".capitalize(word)", ->
+    it "capitalizes the word", ->
+      expect(_.capitalize('')).toBe ''
+      expect(_.capitalize(null)).toBe null
+      expect(_.capitalize()).toBe undefined
+      expect(_.capitalize('Github')).toBe 'GitHub'
+      expect(_.capitalize('test')).toBe 'Test'
