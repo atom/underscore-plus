@@ -193,7 +193,16 @@ describe "underscore extensions", ->
   describe ".capitalize(word)", ->
     it "capitalizes the word", ->
       expect(_.capitalize('')).toBe ''
-      expect(_.capitalize(null)).toBe null
-      expect(_.capitalize()).toBe undefined
+      expect(_.capitalize(null)).toBe ''
+      expect(_.capitalize()).toBe ''
       expect(_.capitalize('Github')).toBe 'GitHub'
       expect(_.capitalize('test')).toBe 'Test'
+
+
+  describe ".dasherize(word)", ->
+    it "dasherizes the word", ->
+      expect(_.dasherize('')).toBe ''
+      expect(_.dasherize(null)).toBe ''
+      expect(_.dasherize()).toBe ''
+      expect(_.dasherize('a_b')).toBe 'a-b'
+      expect(_.dasherize('test')).toBe 'test'

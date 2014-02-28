@@ -20,10 +20,13 @@ plus =
         original.apply(this, args)
 
   camelize: (string) ->
-    string.replace /[_-]+(\w)/g, (m) -> m[1].toUpperCase()
+    if string
+      string.replace /[_-]+(\w)/g, (m) -> m[1].toUpperCase()
+    else
+      ''
 
   capitalize: (word) ->
-    return word unless word
+    return '' unless word
 
     if word.toLowerCase() is 'github'
       'GitHub'
@@ -37,8 +40,10 @@ plus =
     newObject
 
   dasherize: (string) ->
+    return '' unless string
+
     string = string[0].toLowerCase() + string[1..]
-    string.replace /([A-Z])|(_)/g, (m, letter, underscore) ->
+    string.replace /([A-Z])|(_)/g, (m, letter) ->
       if letter
         "-" + letter.toLowerCase()
       else
@@ -68,14 +73,23 @@ plus =
 
     result
 
-  endsWith: (string, suffix) ->
-    string.indexOf(suffix, string.length - suffix.length) isnt -1
+  endsWith: (string, suffix='') ->
+    if string
+      string.indexOf(suffix, string.length - suffix.length) isnt -1
+    else
+      false
 
   escapeAttribute: (string) ->
-    string.replace(/"/g, '&quot;').replace(/\n/g, '').replace(/\\/g, '-')
+    if string
+      string.replace(/"/g, '&quot;').replace(/\n/g, '').replace(/\\/g, '-')
+    else
+      ''
 
   escapeRegExp: (string) ->
-    string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+    if string
+      string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+    else
+      ''
 
   humanizeEventName: (eventName, eventDoc) ->
     [namespace, event]  = eventName.split(':')
@@ -172,13 +186,20 @@ plus =
     sum
 
   uncamelcase: (string) ->
+    return '' unless string
+
     result = string.replace /([A-Z])|(_)/g, (m, letter, underscore) -> " " + letter
     plus.capitalize(result)
 
   undasherize: (string) ->
-    string.split('-').map(plus.capitalize).join(' ')
+    if string
+      string.split('-').map(plus.capitalize).join(' ')
+    else
+      ''
 
   underscore: (string) ->
+    return '' unless string
+
     string = string[0].toLowerCase() + string[1..]
     string.replace /([A-Z])|(-)/g, (m, letter, dash) ->
       if letter
