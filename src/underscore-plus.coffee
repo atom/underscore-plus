@@ -12,6 +12,20 @@ modifierKeyMap =
   up: '\u2191'
   down: '\u2193'
 
+# Human key combos should always explicitly state the shift key. This map is a disambiguator.
+# 'shift-version': 'no-shift-version'
+shiftKeyMap =
+  '_': '-'
+  '+': '='
+  '|': '\\'
+  '{': '['
+  '}': ']'
+  ':': ';'
+  '"': '\''
+  '<': ','
+  '>': '.'
+  '?': '/'
+
 plus =
   adviseBefore: (object, methodName, advice) ->
     original = object[methodName]
@@ -104,6 +118,8 @@ plus =
     return key unless key
     if modifierKeyMap[key]
       modifierKeyMap[key]
+    else if key.length == 1 and shiftKeyMap[key]?
+      [modifierKeyMap.shift, shiftKeyMap[key]]
     else if key.length == 1 and key == key.toUpperCase() and key.toUpperCase() != key.toLowerCase()
       [modifierKeyMap.shift, key.toUpperCase()]
     else if key.length == 1 or /f[0-9]{1,2}/.test(key)
