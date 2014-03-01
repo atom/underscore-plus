@@ -15,6 +15,7 @@ modifierKeyMap =
 # Human key combos should always explicitly state the shift key. This map is a disambiguator.
 # 'shift-version': 'no-shift-version'
 shiftKeyMap =
+  '~': '`'
   '_': '-'
   '+': '='
   '|': '\\'
