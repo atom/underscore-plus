@@ -135,7 +135,7 @@ plus =
     for keystroke in keystrokes
       keys = keystroke.split('-')
       keys = _.flatten(plus.humanizeKey(key) for key in keys)
-      humanizedKeystrokes.push(keys.join(''))
+      humanizedKeystrokes.push(_.uniq(keys).join(''))
     humanizedKeystrokes.join(' ')
 
   isSubset: (potentialSubset, potentialSuperset) ->
