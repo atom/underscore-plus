@@ -48,6 +48,17 @@ describe "underscore extensions", ->
 
   describe "_.underscore(string)", ->
     it "converts `string` to use underscores", ->
+      expect(_.underscore('')).toBe ''
+      expect(_.underscore(null)).toBe ''
+      expect(_.underscore()).toBe ''
+      expect(_.underscore('a_b')).toBe 'a_b'
+      expect(_.underscore('A_b')).toBe 'a_b'
+      expect(_.underscore('a-b')).toBe 'a_b'
+      expect(_.underscore('TheOffice')).toBe 'the_office'
+      expect(_.underscore('theOffice')).toBe 'the_office'
+      expect(_.underscore('test')).toBe 'test'
+      expect(_.underscore(' test ')).toBe ' test '
+      expect(_.underscore('--ParksAndRec')).toBe '__parks_and_rec'
       expect(_.underscore("corey-dale-johnson")).toBe "corey_dale_johnson"
       expect(_.underscore("coreyDaleJohnson")).toBe "corey_dale_johnson"
       expect(_.underscore("CoreyDaleJohnson")).toBe "corey_dale_johnson"

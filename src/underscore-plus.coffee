@@ -218,11 +218,7 @@ plus =
     return '' unless string
 
     string = string[0].toLowerCase() + string[1..]
-    string.replace /([A-Z])|(-)/g, (m, letter) ->
-      if letter
-        "_" + letter.toLowerCase()
-      else
-        "_"
+    string.replace /([A-Z])|-+/g, (match, letter='') -> "_#{letter.toLowerCase()}"
 
   valueForKeyPath: (object, keyPath) ->
     keys = keyPath.split('.')
