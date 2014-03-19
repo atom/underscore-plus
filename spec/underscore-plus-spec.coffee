@@ -212,3 +212,15 @@ describe "underscore extensions", ->
       expect(_.dasherize()).toBe ''
       expect(_.dasherize('a_b')).toBe 'a-b'
       expect(_.dasherize('test')).toBe 'test'
+
+  describe ".uncamelcase(string)", ->
+    it "uncamelcases the string", ->
+      expect(_.uncamelcase('')).toBe ''
+      expect(_.uncamelcase(null)).toBe ''
+      expect(_.uncamelcase()).toBe ''
+      expect(_.uncamelcase('a_b')).toBe 'A b'
+      expect(_.uncamelcase('TheOffice')).toBe 'The Office'
+      expect(_.uncamelcase('theOffice')).toBe 'The Office'
+      expect(_.uncamelcase('test')).toBe 'Test'
+      expect(_.uncamelcase(' test ')).toBe 'Test'
+      expect(_.uncamelcase('__ParksAndRec')).toBe 'Parks And Rec'

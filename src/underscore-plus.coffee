@@ -205,8 +205,8 @@ plus =
   uncamelcase: (string) ->
     return '' unless string
 
-    result = string.replace /([A-Z])|(_)/g, (m, letter, underscore) -> " " + letter
-    plus.capitalize(result)
+    result = string.replace /([A-Z])|_+/g, (match, letter='') -> " #{letter}"
+    plus.capitalize(result.trim())
 
   undasherize: (string) ->
     if string
@@ -218,7 +218,7 @@ plus =
     return '' unless string
 
     string = string[0].toLowerCase() + string[1..]
-    string.replace /([A-Z])|(-)/g, (m, letter, dash) ->
+    string.replace /([A-Z])|(-)/g, (m, letter) ->
       if letter
         "_" + letter.toLowerCase()
       else
