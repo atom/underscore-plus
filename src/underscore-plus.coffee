@@ -189,6 +189,13 @@ plus =
     else
       delete object[keys.shift()]
 
+  hasKeyPath: (object, keyPath) ->
+    keys = keyPath.split('.')
+    for key in keys
+      return false unless object.hasOwnProperty(key)
+      object = object[key]
+    true
+
   spliceWithArray: (originalArray, start, length, insertedArray, chunkSize=100000) ->
     if insertedArray.length < chunkSize
       originalArray.splice(start, length, insertedArray...)

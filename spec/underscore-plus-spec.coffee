@@ -248,3 +248,11 @@ describe "underscore extensions", ->
       _.setValueForKeyPath(object, 'a.b.c', 1)
       _.setValueForKeyPath(object, 'd', 2)
       expect(object).toEqual {a: {b: c: 1}, d: 2}
+
+  describe "::hasKeyPath(object, keyPath)", ->
+    it "determines whether the given object has properties along the given key path", ->
+      object = {a: b: c: 2}
+      expect(_.hasKeyPath(object, 'a')).toBe true
+      expect(_.hasKeyPath(object, 'a.b.c')).toBe true
+      expect(_.hasKeyPath(object, 'a.b.c.d')).toBe false
+      expect(_.hasKeyPath(object, 'a.x')).toBe false
