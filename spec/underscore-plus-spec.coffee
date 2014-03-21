@@ -1,7 +1,7 @@
 _ = require '../src/underscore-plus'
 
 describe "underscore extensions", ->
-  describe "_.adviseBefore", ->
+  describe "::adviseBefore(object, methodName, advice)", ->
     [object, calls] = []
 
     beforeEach ->
@@ -21,7 +21,7 @@ describe "underscore extensions", ->
       object.method(1, 2, 3)
       expect(calls).toEqual []
 
-  describe "_.endsWith", ->
+  describe "::endsWith(string, ending)", ->
     it "returns whether the given string ends with the given suffix", ->
       expect(_.endsWith("test.txt", ".txt")).toBeTruthy()
       expect(_.endsWith("test.txt", "txt")).toBeTruthy()
@@ -31,7 +31,7 @@ describe "underscore extensions", ->
       expect(_.endsWith("test.txt", ".tx")).toBeFalsy()
       expect(_.endsWith("test.txt", "test")).toBeFalsy()
 
-  describe "_.camelize(string)", ->
+  describe "::camelize(string)", ->
     it "converts `string` to camel case", ->
       expect(_.camelize("corey_dale_johnson")).toBe "coreyDaleJohnson"
       expect(_.camelize("corey-dale-johnson")).toBe "coreyDaleJohnson"
@@ -39,14 +39,14 @@ describe "underscore extensions", ->
       expect(_.camelize("coreyDaleJohnson")).toBe "coreyDaleJohnson"
       expect(_.camelize("CoreyDaleJohnson")).toBe "CoreyDaleJohnson"
 
-  describe "_.dasherize(string)", ->
+  describe "::dasherize(string)", ->
     it "converts `string` to use dashes", ->
       expect(_.dasherize("corey_dale_johnson")).toBe "corey-dale-johnson"
       expect(_.dasherize("coreyDaleJohnson")).toBe "corey-dale-johnson"
       expect(_.dasherize("CoreyDaleJohnson")).toBe "corey-dale-johnson"
       expect(_.dasherize("corey-dale-johnson")).toBe "corey-dale-johnson"
 
-  describe "_.underscore(string)", ->
+  describe "::underscore(string)", ->
     it "converts `string` to use underscores", ->
       expect(_.underscore('')).toBe ''
       expect(_.underscore(null)).toBe ''
@@ -64,7 +64,7 @@ describe "underscore extensions", ->
       expect(_.underscore("CoreyDaleJohnson")).toBe "corey_dale_johnson"
       expect(_.underscore("corey_dale_johnson")).toBe "corey_dale_johnson"
 
-  describe "spliceWithArray(originalArray, start, length, insertedArray, chunkSize)", ->
+  describe "::spliceWithArray(originalArray, start, length, insertedArray, chunkSize)", ->
     describe "when the inserted array is smaller than the chunk size", ->
       it "splices the array in place", ->
         array = ['a', 'b', 'c']
@@ -77,7 +77,7 @@ describe "underscore extensions", ->
         _.spliceWithArray(array, 1, 1, ['v', 'w', 'x', 'y', 'z'], 2)
         expect(array).toEqual ['a', 'v', 'w', 'x', 'y', 'z', 'c']
 
-  describe "_.humanizeEventName(eventName)", ->
+  describe "::humanizeEventName(eventName)", ->
     describe "when no namespace exists", ->
       it "undasherizes and capitalizes the event name", ->
         expect(_.humanizeEventName('nonamespace')).toBe 'Nonamespace'
@@ -88,7 +88,7 @@ describe "underscore extensions", ->
         expect(_.humanizeEventName('space:final-frontier')).toBe 'Space: Final Frontier'
         expect(_.humanizeEventName('star-trek:the-next-generation')).toBe 'Star Trek: The Next Generation'
 
-  describe "_.humanizeKeystroke(keystroke)", ->
+  describe "::humanizeKeystroke(keystroke)", ->
     it "replaces single keystroke", ->
       expect(_.humanizeKeystroke('cmd-O')).toEqual '⌘⇧O'
       expect(_.humanizeKeystroke('cmd-shift-up')).toEqual '⌘⇧↑'
@@ -116,7 +116,7 @@ describe "underscore extensions", ->
       expect(_.humanizeKeystroke(null)).toEqual null
       expect(_.humanizeKeystroke('')).toEqual ''
 
-  describe "_.deepExtend(objects...)", ->
+  describe "::deepExtend(objects...)", ->
     it "copies all key/values from each object into a new object", ->
       first =
         things:
@@ -147,7 +147,7 @@ describe "underscore extensions", ->
             first: 1
             second: 2
 
-  describe "_.isSubset(potentialSubset, potentialSuperset)", ->
+  describe "::isSubset(potentialSubset, potentialSuperset)", ->
     it "returns whether the first argument is a subset of the second", ->
       expect(_.isSubset([1, 2], [1, 2])).toBeTruthy()
       expect(_.isSubset([1, 2], [1, 2, 3])).toBeTruthy()
@@ -155,7 +155,7 @@ describe "underscore extensions", ->
       expect(_.isSubset([], [])).toBeTruthy()
       expect(_.isSubset([1, 2], [2, 3])).toBeFalsy()
 
-  describe '_.isEqual(a, b)', ->
+  describe '::isEqual(a, b)', ->
     it 'returns true when the elements are equal, false otherwise', ->
       expect(_.isEqual(null, null)).toBe true
       expect(_.isEqual('test', 'test')).toBe true
@@ -207,7 +207,7 @@ describe "underscore extensions", ->
       expect(-> _.isEqual({}, {}, "junk")).not.toThrow()
       expect(-> _.isEqual({}, {}, [], "junk")).not.toThrow()
 
-  describe ".capitalize(word)", ->
+  describe "::capitalize(word)", ->
     it "capitalizes the word", ->
       expect(_.capitalize('')).toBe ''
       expect(_.capitalize(null)).toBe ''
@@ -215,8 +215,7 @@ describe "underscore extensions", ->
       expect(_.capitalize('Github')).toBe 'GitHub'
       expect(_.capitalize('test')).toBe 'Test'
 
-
-  describe ".dasherize(word)", ->
+  describe "::dasherize(word)", ->
     it "dasherizes the word", ->
       expect(_.dasherize('')).toBe ''
       expect(_.dasherize(null)).toBe ''
@@ -224,7 +223,7 @@ describe "underscore extensions", ->
       expect(_.dasherize('a_b')).toBe 'a-b'
       expect(_.dasherize('test')).toBe 'test'
 
-  describe ".uncamelcase(string)", ->
+  describe "::uncamelcase(string)", ->
     it "uncamelcases the string", ->
       expect(_.uncamelcase('')).toBe ''
       expect(_.uncamelcase(null)).toBe ''
