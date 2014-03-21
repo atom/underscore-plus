@@ -234,3 +234,17 @@ describe "underscore extensions", ->
       expect(_.uncamelcase('test')).toBe 'Test'
       expect(_.uncamelcase(' test ')).toBe 'Test'
       expect(_.uncamelcase('__ParksAndRec')).toBe 'Parks And Rec'
+
+  describe "::valueForKeyPath(object, keyPath)", ->
+    it "retrieves the value at the given key path or undefined if none exists", ->
+      object = {a: b: c: 2}
+      expect(_.valueForKeyPath(object, 'a.b.c')).toBe 2
+      expect(_.valueForKeyPath(object, 'a.b')).toEqual {c: 2}
+      expect(_.valueForKeyPath(object, 'a.x')).toBeUndefined()
+
+  describe "::setValueForKeyPath(object, keyPath, value)", ->
+    it "assigns a value at the given key path, creating intermediate objects if needed", ->
+      object = {}
+      _.setValueForKeyPath(object, 'a.b.c', 1)
+      _.setValueForKeyPath(object, 'd', 2)
+      expect(object).toEqual {a: {b: c: 1}, d: 2}
