@@ -101,12 +101,14 @@ describe "underscore extensions", ->
 
       expect(_.humanizeKeystroke('cmd-|')).toEqual '⌘⇧\\'
       expect(_.humanizeKeystroke('cmd-}')).toEqual '⌘⇧]'
+      expect(_.humanizeKeystroke('cmd--')).toEqual '⌘-'
 
     it "correctly replaces keystrokes with shift and capital letter", ->
       expect(_.humanizeKeystroke('cmd-shift-P')).toEqual '⌘⇧P'
 
     it "replaces multiple keystrokes", ->
       expect(_.humanizeKeystroke('cmd-O cmd-n')).toEqual '⌘⇧O ⌘N'
+      expect(_.humanizeKeystroke('cmd-shift-- cmd-n')).toEqual '⌘⇧- ⌘N'
 
     it "formats function keys", ->
       expect(_.humanizeKeystroke('cmd-f2')).toEqual '⌘F2'

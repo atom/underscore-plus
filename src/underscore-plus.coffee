@@ -133,9 +133,13 @@ plus =
     keystrokes = keystroke.split(' ')
     humanizedKeystrokes = []
     for keystroke in keystrokes
-      keys = keystroke.split('-')
-      keys = _.flatten(plus.humanizeKey(key) for key in keys)
-      humanizedKeystrokes.push(_.uniq(keys).join(''))
+      keys = []
+      splitKeystroke = keystroke.split('-')
+      for key, index in splitKeystroke
+        # Check for consecutive dashes such as cmd--
+        key = '-' if key is '' and splitKeystroke[index-1] is ''
+        keys.push(plus.humanizeKey(key)) if key
+      humanizedKeystrokes.push(_.uniq(_.flatten(keys)).join(''))
     humanizedKeystrokes.join(' ')
 
   isSubset: (potentialSubset, potentialSuperset) ->
