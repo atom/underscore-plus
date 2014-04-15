@@ -209,6 +209,11 @@ describe "underscore extensions", ->
       expect(-> _.isEqual({}, {}, "junk")).not.toThrow()
       expect(-> _.isEqual({}, {}, [], "junk")).not.toThrow()
 
+  describe "::isEqualForProperties(a, b, properties...)", ->
+    it "compares two objects for equality using just the specified properties", ->
+      expect(_.isEqualForProperties({a: 1, b: 2, c: 3}, {a: 1, b: 2, c: 4}, 'a', 'b')).toBe true
+      expect(_.isEqualForProperties({a: 1, b: 2, c: 3}, {a: 1, b: 2, c: 4}, 'a', 'c')).toBe false
+
   describe "::capitalize(word)", ->
     it "capitalizes the word", ->
       expect(_.capitalize('')).toBe ''

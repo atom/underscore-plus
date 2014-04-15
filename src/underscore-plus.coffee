@@ -244,6 +244,9 @@ plus =
     else
       isEqual(a, b)
 
+  isEqualForProperties: (a, b, properties...) ->
+    _.isEqual(_.pick(a, properties...), _.pick(b, properties...))
+
 isEqual = (a, b, aStack=[], bStack=[]) ->
   return _.isEqual(a, b) if a is b
   return _.isEqual(a, b) if _.isFunction(a) or _.isFunction(b)
