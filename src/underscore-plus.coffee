@@ -245,7 +245,9 @@ plus =
       isEqual(a, b)
 
   isEqualForProperties: (a, b, properties...) ->
-    _.isEqual(_.pick(a, properties...), _.pick(b, properties...))
+    for property in properties
+      return false unless _.isEqual(a[property], b[property])
+    true
 
 isEqual = (a, b, aStack=[], bStack=[]) ->
   return _.isEqual(a, b) if a is b
