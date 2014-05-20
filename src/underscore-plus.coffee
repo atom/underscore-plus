@@ -169,7 +169,12 @@ plus =
     newObject
 
   multiplyString: (string, n) ->
-    new Array(1 + n).join(string)
+    finalString = ""
+    i = 0
+    while i < n
+      finalString += string
+      i++
+    finalString
 
   pluralize: (count=0, singular, plural=singular+'s') ->
     if count is 1
