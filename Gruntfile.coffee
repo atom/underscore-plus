@@ -3,11 +3,18 @@ module.exports = (grunt) ->
     pkg: grunt.file.readJSON('package.json')
 
     coffee:
-      glob_to_multiple:
+      lib:
         expand: true
         cwd: 'src'
         src: ['*.coffee']
         dest: 'lib'
+        ext: '.js'
+
+      dist:
+        expand: true
+        cwd: 'src'
+        src: ['*.coffee']
+        dest: 'dist'
         ext: '.js'
 
     coffeelint:
@@ -34,5 +41,6 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'clean', -> require('rimraf').sync('lib')
   grunt.registerTask('lint', ['coffeelint:src', 'coffeelint:test'])
-  grunt.registerTask('default', ['coffee', 'coffeelint'])
+  grunt.registerTask('bower', ['lint', 'coffee:dist'])
+  grunt.registerTask('default', ['coffee:lib', 'coffeelint'])
   grunt.registerTask('test', ['default', 'coffeelint:test', 'shell:test'])
