@@ -90,28 +90,56 @@ describe "underscore extensions", ->
 
   describe "::humanizeKeystroke(keystroke)", ->
     it "replaces single keystroke", ->
-      expect(_.humanizeKeystroke('cmd-O')).toEqual '⌘⇧O'
-      expect(_.humanizeKeystroke('cmd-shift-up')).toEqual '⌘⇧↑'
-      expect(_.humanizeKeystroke('cmd-option-down')).toEqual '⌘⌥↓'
-      expect(_.humanizeKeystroke('cmd-option-left')).toEqual '⌘⌥←'
-      expect(_.humanizeKeystroke('cmd-option-right')).toEqual '⌘⌥→'
-      expect(_.humanizeKeystroke('cmd-o')).toEqual '⌘O'
-      expect(_.humanizeKeystroke('ctrl-2')).toEqual '⌃2'
-      expect(_.humanizeKeystroke('cmd-space')).toEqual '⌘space'
+      expect(_.humanizeKeystroke('cmd-O', 'darwin')).toEqual '⌘⇧O'
+      expect(_.humanizeKeystroke('cmd-O', 'linux')).toEqual 'Cmd+Shift+O'
 
-      expect(_.humanizeKeystroke('cmd-|')).toEqual '⌘⇧\\'
-      expect(_.humanizeKeystroke('cmd-}')).toEqual '⌘⇧]'
-      expect(_.humanizeKeystroke('cmd--')).toEqual '⌘-'
+      expect(_.humanizeKeystroke('cmd-shift-up', 'darwin')).toEqual '⌘⇧↑'
+      expect(_.humanizeKeystroke('cmd-shift-up', 'linux')).toEqual 'Cmd+Shift+Up'
+
+      expect(_.humanizeKeystroke('cmd-option-down', 'darwin')).toEqual '⌘⌥↓'
+      expect(_.humanizeKeystroke('cmd-option-down', 'linux')).toEqual 'Cmd+Alt+Down'
+
+      expect(_.humanizeKeystroke('cmd-option-left', 'darwin')).toEqual '⌘⌥←'
+      expect(_.humanizeKeystroke('cmd-option-left', 'linux')).toEqual 'Cmd+Alt+Left'
+
+      expect(_.humanizeKeystroke('cmd-option-right', 'darwin')).toEqual '⌘⌥→'
+      expect(_.humanizeKeystroke('cmd-option-right', 'linux')).toEqual 'Cmd+Alt+Right'
+
+      expect(_.humanizeKeystroke('cmd-o', 'darwin')).toEqual '⌘O'
+      expect(_.humanizeKeystroke('cmd-o', 'linux')).toEqual 'Cmd+O'
+
+      expect(_.humanizeKeystroke('ctrl-2', 'darwin')).toEqual '⌃2'
+      expect(_.humanizeKeystroke('ctrl-2', 'linux')).toEqual 'Ctrl+2'
+
+      expect(_.humanizeKeystroke('cmd-space', 'darwin')).toEqual '⌘space'
+      expect(_.humanizeKeystroke('cmd-space', 'linux')).toEqual 'Cmd+Space'
+
+      expect(_.humanizeKeystroke('cmd-|', 'darwin')).toEqual '⌘⇧\\'
+      expect(_.humanizeKeystroke('cmd-|', 'linux')).toEqual 'Cmd+Shift+\\'
+
+      expect(_.humanizeKeystroke('cmd-}', 'darwin')).toEqual '⌘⇧]'
+      expect(_.humanizeKeystroke('cmd-}', 'linux')).toEqual 'Cmd+Shift+]'
+
+      expect(_.humanizeKeystroke('cmd--', 'darwin')).toEqual '⌘-'
+      expect(_.humanizeKeystroke('cmd--', 'linux')).toEqual 'Cmd+-'
 
     it "correctly replaces keystrokes with shift and capital letter", ->
-      expect(_.humanizeKeystroke('cmd-shift-P')).toEqual '⌘⇧P'
+      expect(_.humanizeKeystroke('cmd-shift-P', 'darwin')).toEqual '⌘⇧P'
+      expect(_.humanizeKeystroke('cmd-shift-P', 'linux')).toEqual 'Cmd+Shift+P'
 
     it "replaces multiple keystrokes", ->
-      expect(_.humanizeKeystroke('cmd-O cmd-n')).toEqual '⌘⇧O ⌘N'
-      expect(_.humanizeKeystroke('cmd-shift-- cmd-n')).toEqual '⌘⇧- ⌘N'
+      expect(_.humanizeKeystroke('cmd-O cmd-n', 'darwin')).toEqual '⌘⇧O ⌘N'
+      expect(_.humanizeKeystroke('cmd-O cmd-n', 'linux')).toEqual 'Cmd+Shift+O Cmd+N'
+
+      expect(_.humanizeKeystroke('cmd-shift-- cmd-n', 'darwin')).toEqual '⌘⇧- ⌘N'
+      expect(_.humanizeKeystroke('cmd-shift-- cmd-n', 'linux')).toEqual 'Cmd+Shift+- Cmd+N'
+
+      expect(_.humanizeKeystroke('cmd-k right', 'darwin')).toEqual '⌘K →'
+      expect(_.humanizeKeystroke('cmd-k right', 'linux')).toEqual 'Cmd+K Right'
 
     it "formats function keys", ->
-      expect(_.humanizeKeystroke('cmd-f2')).toEqual '⌘F2'
+      expect(_.humanizeKeystroke('cmd-f2', 'darwin')).toEqual '⌘F2'
+      expect(_.humanizeKeystroke('cmd-f2', 'linux')).toEqual 'Cmd+F2'
 
     it "handles junk input", ->
       expect(_.humanizeKeystroke()).toEqual undefined

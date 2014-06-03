@@ -1,6 +1,6 @@
 _ = require 'underscore'
 
-modifierKeyMap =
+macModifierKeyMap =
   cmd: '\u2318'
   ctrl: '\u2303'
   alt: '\u2325'
@@ -11,6 +11,18 @@ modifierKeyMap =
   right: '\u2192'
   up: '\u2191'
   down: '\u2193'
+
+nonMacModifierKeyMap =
+  cmd: 'Cmd'
+  ctrl: 'Ctrl'
+  alt: 'Alt'
+  option: 'Alt'
+  shift: 'Shift'
+  enter: 'Enter'
+  left: 'Left'
+  right: 'Right'
+  up: 'Up'
+  down: 'Down'
 
 # Human key combos should always explicitly state the shift key. This map is a disambiguator.
 # 'shift-version': 'no-shift-version'
@@ -115,8 +127,11 @@ plus =
 
     "#{namespaceDoc}: #{eventDoc}"
 
-  humanizeKey: (key) ->
+  humanizeKey: (key, platform=process.platform) ->
     return key unless key
+
+    modifierKeyMap = if platform is 'darwin' then macModifierKeyMap else nonMacModifierKeyMap
+
     if modifierKeyMap[key]
       modifierKeyMap[key]
     else if key.length == 1 and shiftKeyMap[key]?
@@ -126,10 +141,23 @@ plus =
     else if key.length == 1 or /f[0-9]{1,2}/.test(key)
       key.toUpperCase()
     else
-      key
+      if platform is 'darwin'
+        key
+      else
+        plus.capitalize(key)
 
-  humanizeKeystroke: (keystroke) ->
+  # Humanize the keystroke according to platform conventions. This method
+  # attempts to mirror the text the given keystroke would have if displayed in
+  # a system menu.
+  #
+  # keystroke - A String keystroke to humanize such as `ctrl-O`.
+  # platform  - An optional String platform to humanize for (default:
+  #             `process.platform`).
+  #
+  # Returns a humanized representation of the keystroke.
+  humanizeKeystroke: (keystroke, platform=process.platform) ->
     return keystroke unless keystroke
+
     keystrokes = keystroke.split(' ')
     humanizedKeystrokes = []
     for keystroke in keystrokes
@@ -138,8 +166,15 @@ plus =
       for key, index in splitKeystroke
         # Check for consecutive dashes such as cmd--
         key = '-' if key is '' and splitKeystroke[index-1] is ''
-        keys.push(plus.humanizeKey(key)) if key
-      humanizedKeystrokes.push(_.uniq(_.flatten(keys)).join(''))
+        keys.push(plus.humanizeKey(key, platform)) if key
+
+      keys = _.uniq(_.flatten(keys))
+      if platform is 'darwin'
+        keys = keys.join('')
+      else
+        keys = keys.join('+')
+      humanizedKeystrokes.push(keys)
+
     humanizedKeystrokes.join(' ')
 
   isSubset: (potentialSubset, potentialSuperset) ->
