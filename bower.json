@@ -8,7 +8,7 @@
     "nathansobo <nathan@github.com>"
   ],
   "description": "Underscore with some extensions",
-  "main": "./lib/underscore-plus.js",
+  "main": "./dist/underscore-plus.js",
   "keywords": [
     "underscore"
   ],
