@@ -19,6 +19,7 @@
     "bower_components",
     "spec",
     "src",
+    "lib",
     "Gruntfile.coffee",
     "package.json"
   ],
