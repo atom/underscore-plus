@@ -100,15 +100,16 @@
       });
     },
     deepClone: function(object) {
-      var _this = this;
       if (_.isArray(object)) {
         return object.map(function(value) {
           return plus.deepClone(value);
         });
       } else if (_.isObject(object)) {
-        return plus.mapObject(object, function(key, value) {
-          return [key, plus.deepClone(value)];
-        });
+        return plus.mapObject(object, (function(_this) {
+          return function(key, value) {
+            return [key, plus.deepClone(value)];
+          };
+        })(this));
       } else {
         return object;
       }
@@ -131,6 +132,19 @@
         }
       }
       return result;
+    },
+    deepContains: function(array, target) {
+      var object, _i, _len;
+      if (array == null) {
+        return false;
+      }
+      for (_i = 0, _len = array.length; _i < _len; _i++) {
+        object = array[_i];
+        if (_.isEqual(object, target)) {
+          return true;
+        }
+      }
+      return false;
     },
     endsWith: function(string, suffix) {
       if (suffix == null) {
