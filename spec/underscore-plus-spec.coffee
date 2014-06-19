@@ -177,6 +177,19 @@ describe "underscore extensions", ->
             first: 1
             second: 2
 
+  describe "::deepContains(array, target)", ->
+    subject = null
+    beforeEach ->
+      subject = [{one: 1, two: {three: 3}}, {four: 4, five: {six: 6}}, 'omgkittens']
+
+    it "returns true for a matching object in the array", ->
+      expect(_.deepContains(subject, {four: 4, five: {six: 6}})).toBe true
+      expect(_.deepContains(subject, 'omgkittens')).toBe true
+
+    it "returns false when it does not find a match in the array", ->
+      expect(_.deepContains(subject, {four: 4, five: {six: 7}})).toBe false
+      expect(_.deepContains(subject, 'nope')).toBe false
+
   describe "::isSubset(potentialSubset, potentialSuperset)", ->
     it "returns whether the first argument is a subset of the second", ->
       expect(_.isSubset([1, 2], [1, 2])).toBeTruthy()

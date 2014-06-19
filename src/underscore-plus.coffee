@@ -100,6 +100,12 @@ plus =
 
     result
 
+  deepContains: (array, target) ->
+    return false unless array?
+    for object in array
+      return true if _.isEqual(object, target)
+    false
+
   endsWith: (string, suffix='') ->
     if string
       string.indexOf(suffix, string.length - suffix.length) isnt -1
