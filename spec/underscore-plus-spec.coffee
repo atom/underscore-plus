@@ -225,6 +225,14 @@ describe "underscore extensions", ->
       expect(_.isEqual(/a/, /b/)).toBe false
       expect(_.isEqual(/a/gi, /a/gi)).toBe true
 
+      # Simulate DOM element comparison
+      domElement1 = {nodeType: 1, a: 2}
+      domElement2 = {nodeType: 1, a: 2}
+      expect(_.isEqual(domElement1, domElement2)).toBe false
+      expect(_.isEqual(domElement2, domElement1)).toBe false
+      expect(_.isEqual(domElement1, domElement1)).toBe true
+      expect(_.isEqual(domElement2, domElement2)).toBe true
+
     it "calls custom equality methods with stacks so they can participate in cycle-detection", ->
       class X
         isEqual: (b, aStack, bStack) ->

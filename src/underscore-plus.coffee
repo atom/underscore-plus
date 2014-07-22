@@ -318,6 +318,8 @@ isEqual = (a, b, aStack=[], bStack=[]) ->
         break
   else if _.isRegExp(a) and _.isRegExp(b)
     equal = _.isEqual(a, b)
+  else if _.isElement(a) and _.isElement(b)
+    equal = a is b
   else if _.isObject(a) and _.isObject(b)
     aCtor = a.constructor
     bCtor = b.constructor
