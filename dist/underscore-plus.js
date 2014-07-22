@@ -100,16 +100,15 @@
       });
     },
     deepClone: function(object) {
+      var _this = this;
       if (_.isArray(object)) {
         return object.map(function(value) {
           return plus.deepClone(value);
         });
       } else if (_.isObject(object)) {
-        return plus.mapObject(object, (function(_this) {
-          return function(key, value) {
-            return [key, plus.deepClone(value)];
-          };
-        })(this));
+        return plus.mapObject(object, function(key, value) {
+          return [key, plus.deepClone(value)];
+        });
       } else {
         return object;
       }
@@ -453,6 +452,8 @@
       }
     } else if (_.isRegExp(a) && _.isRegExp(b)) {
       equal = _.isEqual(a, b);
+    } else if (_.isElement(a) && _.isElement(b)) {
+      equal = a === b;
     } else if (_.isObject(a) && _.isObject(b)) {
       aCtor = a.constructor;
       bCtor = b.constructor;
