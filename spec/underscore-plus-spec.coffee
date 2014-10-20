@@ -298,6 +298,12 @@ describe "underscore extensions", ->
       expect(_.valueForKeyPath(object, 'a.b')).toEqual {c: 2}
       expect(_.valueForKeyPath(object, 'a.x')).toBeUndefined()
 
+    it "retrieves the value at the when the key contains a dot", ->
+      object = {a: b: 'c\\.d': 2}
+      expect(_.valueForKeyPath(object, 'a.b.c\\.d')).toBe 2
+      expect(_.valueForKeyPath(object, 'a.b')).toEqual {'c\\.d': 2}
+      expect(_.valueForKeyPath(object, 'a.x')).toBeUndefined()
+
   describe "::setValueForKeyPath(object, keyPath, value)", ->
     it "assigns a value at the given key path, creating intermediate objects if needed", ->
       object = {}
@@ -305,10 +311,21 @@ describe "underscore extensions", ->
       _.setValueForKeyPath(object, 'd', 2)
       expect(object).toEqual {a: {b: c: 1}, d: 2}
 
+    it "assigns a value at the given key path when the key has a dot in it", ->
+      object = {}
+      _.setValueForKeyPath(object, 'a.b.c', 1)
+      _.setValueForKeyPath(object, 'd\\.e', 2)
+      expect(object).toEqual {a: {b: c: 1}, 'd\\.e': 2}
+
   describe "::hasKeyPath(object, keyPath)", ->
     it "determines whether the given object has properties along the given key path", ->
-      object = {a: b: c: 2}
+      object =
+        a:
+          b:
+            c: 2
+          'd\\.e': 3
       expect(_.hasKeyPath(object, 'a')).toBe true
       expect(_.hasKeyPath(object, 'a.b.c')).toBe true
       expect(_.hasKeyPath(object, 'a.b.c.d')).toBe false
       expect(_.hasKeyPath(object, 'a.x')).toBe false
+      expect(_.hasKeyPath(object, 'a.d\\.e')).toBe true

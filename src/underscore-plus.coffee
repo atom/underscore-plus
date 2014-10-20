@@ -39,6 +39,16 @@ shiftKeyMap =
   '>': '.'
   '?': '/'
 
+splitKeyPath = (keyPath) ->
+  startIndex = 0
+  keyPathArray = []
+  for char, i in keyPath
+    if char is '.' and (i is 0 or keyPath[i-1] != '\\')
+      keyPathArray.push keyPath.substring(startIndex, i)
+      startIndex = i + 1
+  keyPathArray.push keyPath.substr(startIndex, keyPath.length)
+  keyPathArray
+
 plus =
   adviseBefore: (object, methodName, advice) ->
     original = object[methodName]
@@ -229,7 +239,7 @@ plus =
     array
 
   setValueForKeyPath: (object, keyPath, value) ->
-    keys = keyPath.split('.')
+    keys = splitKeyPath(keyPath)
     while keys.length > 1
       key = keys.shift()
       object[key] ?= {}
@@ -240,7 +250,7 @@ plus =
       delete object[keys.shift()]
 
   hasKeyPath: (object, keyPath) ->
-    keys = keyPath.split('.')
+    keys = splitKeyPath(keyPath)
     for key in keys
       return false unless object.hasOwnProperty(key)
       object = object[key]
@@ -278,7 +288,7 @@ plus =
     string.replace /([A-Z])|-+/g, (match, letter='') -> "_#{letter.toLowerCase()}"
 
   valueForKeyPath: (object, keyPath) ->
-    keys = keyPath.split('.')
+    keys = splitKeyPath(keyPath)
     for key in keys
       object = object[key]
       return unless object?
