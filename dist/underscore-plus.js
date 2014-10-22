@@ -119,7 +119,7 @@
         return object.map(function(value) {
           return plus.deepClone(value);
         });
-      } else if (_.isObject(object)) {
+      } else if (_.isObject(object) && !_.isFunction(object)) {
         return plus.mapObject(object, (function(_this) {
           return function(key, value) {
             return [key, plus.deepClone(value)];
