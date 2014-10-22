@@ -94,7 +94,7 @@ plus =
   deepClone: (object) ->
     if _.isArray(object)
       object.map (value) -> plus.deepClone(value)
-    else if _.isObject(object)
+    else if _.isObject(object) and not _.isFunction(object)
       plus.mapObject object, (key, value) => [key, plus.deepClone(value)]
     else
       object

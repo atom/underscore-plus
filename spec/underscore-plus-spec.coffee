@@ -329,3 +329,15 @@ describe "underscore extensions", ->
       expect(_.hasKeyPath(object, 'a.b.c.d')).toBe false
       expect(_.hasKeyPath(object, 'a.x')).toBe false
       expect(_.hasKeyPath(object, 'a.d\\.e')).toBe true
+
+  describe "deepClone(object)", ->
+    it "clones nested object", ->
+      object =
+        a:
+          b: 'test'
+          c:
+            d: -> console.log('hi')
+          e: 3
+          f: [4, 'abc']
+
+      expect(_.deepClone(object)).toEqual object
