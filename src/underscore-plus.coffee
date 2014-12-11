@@ -42,6 +42,7 @@ shiftKeyMap =
 splitKeyPath = (keyPath) ->
   startIndex = 0
   keyPathArray = []
+  return keyPathArray unless keyPath?
   for char, i in keyPath
     if char is '.' and (i is 0 or keyPath[i-1] != '\\')
       keyPathArray.push keyPath.substring(startIndex, i)
