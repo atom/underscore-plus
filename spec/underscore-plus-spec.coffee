@@ -304,6 +304,11 @@ describe "underscore extensions", ->
       expect(_.valueForKeyPath(object, 'a.b')).toEqual {'c\\.d': 2}
       expect(_.valueForKeyPath(object, 'a.x')).toBeUndefined()
 
+    it "returns the object when no key path is given", ->
+      object = {a: b: 'c\\.d': 2}
+      expect(_.valueForKeyPath(object, null)).toBe(object)
+      expect(_.valueForKeyPath(object)).toBe(object)
+
   describe "::setValueForKeyPath(object, keyPath, value)", ->
     it "assigns a value at the given key path, creating intermediate objects if needed", ->
       object = {}
