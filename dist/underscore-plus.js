@@ -48,6 +48,9 @@
     var char, i, keyPathArray, startIndex, _i, _len;
     startIndex = 0;
     keyPathArray = [];
+    if (keyPath == null) {
+      return keyPathArray;
+    }
     for (i = _i = 0, _len = keyPath.length; _i < _len; i = ++_i) {
       char = keyPath[i];
       if (char === '.' && (i === 0 || keyPath[i - 1] !== '\\')) {
