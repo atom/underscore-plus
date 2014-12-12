@@ -179,7 +179,7 @@ describe "underscore extensions", ->
 
     it "prefers values from later objects over those from earlier objects", ->
       first =
-        things: { string: 'oh' }
+        things: {string: 'oh'}
         otherThings: ['one', 'two']
 
       second =
@@ -189,6 +189,11 @@ describe "underscore extensions", ->
       expect(_.deepExtend(first, second)).toEqual
         things: false
         otherThings: null
+
+    it "overrides objects with scalar values", ->
+      expect(_.deepExtend({a: {b: "c"}}, {a: "d"})).toEqual {a: "d"}
+      expect(_.deepExtend({a: {b: "c"}}, {a: "d"}, {a: {e: "f"}})).toEqual {a: {e: "f"}}
+      expect(_.deepExtend({a: {b: "c"}}, {a: "d"}, {a: "e"})).toEqual {a: "e"}
 
   describe "::deepContains(array, target)", ->
     subject = null
