@@ -107,8 +107,7 @@ plus =
         if _.isObject(value) and not _.isArray(value)
           result[key] = plus.deepExtend(result[key], value)
         else
-          result[key] ?= value
-
+          result[key] = value
     result
 
   deepContains: (array, target) ->
