@@ -138,13 +138,17 @@
       result = {};
       for (_i = 0, _len = objects.length; _i < _len; _i++) {
         object = objects[_i];
-        for (key in object) {
-          value = object[key];
-          if (_.isObject(value) && !_.isArray(value)) {
-            result[key] = plus.deepExtend(result[key], value);
-          } else {
-            result[key] = value;
+        if (typeof result === 'object' && typeof object === 'object') {
+          for (key in object) {
+            value = object[key];
+            if (_.isObject(value) && !_.isArray(value)) {
+              result[key] = plus.deepExtend(result[key], value);
+            } else {
+              result[key] = value;
+            }
           }
+        } else {
+          result = object;
         }
       }
       return result;
