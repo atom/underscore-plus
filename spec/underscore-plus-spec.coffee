@@ -169,13 +169,31 @@ describe "underscore extensions", ->
 
       expect(result).toEqual
         things:
-          string: "oh"
+          string: "cool"
           boolean: false
           array: [1,2,3]
-          anotherArray: ['a', 'b', 'c']
+          anotherArray: ['aa', 'bb', 'cc']
           object:
             first: 1
             second: 2
+
+    it "prefers values from later objects over those from earlier objects", ->
+      first =
+        things: {string: 'oh'}
+        otherThings: ['one', 'two']
+
+      second =
+        things: false
+        otherThings: null
+
+      expect(_.deepExtend(first, second)).toEqual
+        things: false
+        otherThings: null
+
+    it "overrides objects with scalar values", ->
+      expect(_.deepExtend({a: {b: "c"}}, {a: "d"})).toEqual {a: "d"}
+      expect(_.deepExtend({a: {b: "c"}}, {a: "d"}, {a: {e: "f"}})).toEqual {a: {e: "f"}}
+      expect(_.deepExtend({a: {b: "c"}}, {a: "d"}, {a: "e"})).toEqual {a: "e"}
 
   describe "::deepContains(array, target)", ->
     subject = null

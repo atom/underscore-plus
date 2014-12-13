@@ -143,9 +143,7 @@
           if (_.isObject(value) && !_.isArray(value)) {
             result[key] = plus.deepExtend(result[key], value);
           } else {
-            if (result[key] == null) {
-              result[key] = value;
-            }
+            result[key] = value;
           }
         }
       }

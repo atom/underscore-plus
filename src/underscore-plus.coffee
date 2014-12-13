@@ -103,12 +103,14 @@ plus =
   deepExtend: (objects...) ->
     result = {}
     for object in objects
-      for key, value of object
-        if _.isObject(value) and not _.isArray(value)
-          result[key] = plus.deepExtend(result[key], value)
-        else
-          result[key] ?= value
-
+      if typeof result is 'object' and typeof object is 'object'
+        for key, value of object
+          if _.isObject(value) and not _.isArray(value)
+            result[key] = plus.deepExtend(result[key], value)
+          else
+            result[key] = value
+      else
+        result = object
     result
 
   deepContains: (array, target) ->
