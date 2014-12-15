@@ -147,7 +147,7 @@ describe "underscore extensions", ->
       expect(_.humanizeKeystroke('')).toEqual ''
 
   describe "::deepExtend(objects...)", ->
-    it "copies all key/values from each object into a new object", ->
+    it "copies all key/values from each object onto the target", ->
       first =
         things:
           string: "oh"
@@ -164,9 +164,12 @@ describe "underscore extensions", ->
           anotherArray: ['aa', 'bb', 'cc']
           object:
             first: 1
+          newObject:
+            first: 'one'
 
       result = _.deepExtend(first, second)
 
+      expect(result).toBe(first)
       expect(result).toEqual
         things:
           string: "cool"
@@ -176,6 +179,9 @@ describe "underscore extensions", ->
           object:
             first: 1
             second: 2
+          newObject:
+            first: 'one'
+      expect(result.things.newObject).not.toBe(second.things.newObject)
 
     it "prefers values from later objects over those from earlier objects", ->
       first =

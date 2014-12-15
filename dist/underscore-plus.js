@@ -1,5 +1,5 @@
 (function() {
-  var isEqual, macModifierKeyMap, nonMacModifierKeyMap, plus, shiftKeyMap, splitKeyPath, _,
+  var isEqual, isPlainObject, macModifierKeyMap, nonMacModifierKeyMap, plus, shiftKeyMap, splitKeyPath, _,
     __slice = [].slice;
 
   _ = require('underscore');
@@ -60,6 +60,10 @@
     }
     keyPathArray.push(keyPath.substr(startIndex, keyPath.length));
     return keyPathArray;
+  };
+
+  isPlainObject = function(value) {
+    return _.isObject(value) && !_.isArray(value);
   };
 
   plus = {
@@ -133,22 +137,18 @@
       }
     },
     deepExtend: function() {
-      var key, object, objects, result, value, _i, _len;
-      objects = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      result = {};
+      var key, object, objects, result, target, value, _i, _len;
+      target = arguments[0], objects = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      result = target;
       for (_i = 0, _len = objects.length; _i < _len; _i++) {
         object = objects[_i];
-        if (typeof result === 'object' && typeof object === 'object') {
+        if (isPlainObject(result) && isPlainObject(object)) {
           for (key in object) {
             value = object[key];
-            if (_.isObject(value) && !_.isArray(value)) {
-              result[key] = plus.deepExtend(result[key], value);
-            } else {
-              result[key] = value;
-            }
+            result[key] = plus.deepExtend(result[key], value);
           }
         } else {
-          result = object;
+          result = plus.deepClone(object);
         }
       }
       return result;

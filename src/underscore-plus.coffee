@@ -50,6 +50,9 @@ splitKeyPath = (keyPath) ->
   keyPathArray.push keyPath.substr(startIndex, keyPath.length)
   keyPathArray
 
+isPlainObject = (value) ->
+  _.isObject(value) and not _.isArray(value)
+
 plus =
   adviseBefore: (object, methodName, advice) ->
     original = object[methodName]
@@ -100,17 +103,14 @@ plus =
     else
       object
 
-  deepExtend: (objects...) ->
-    result = {}
+  deepExtend: (target, objects...) ->
+    result = target
     for object in objects
-      if typeof result is 'object' and typeof object is 'object'
+      if isPlainObject(result) and isPlainObject(object)
         for key, value of object
-          if _.isObject(value) and not _.isArray(value)
-            result[key] = plus.deepExtend(result[key], value)
-          else
-            result[key] = value
+          result[key] = plus.deepExtend(result[key], value)
       else
-        result = object
+        result = plus.deepClone(object)
     result
 
   deepContains: (array, target) ->
