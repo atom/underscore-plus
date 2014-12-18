@@ -282,6 +282,9 @@
       newObject = {};
       for (key in object) {
         value = object[key];
+        if (!object.hasOwnProperty(key)) {
+          continue;
+        }
         _ref = iterator(key, value), key = _ref[0], value = _ref[1];
         newObject[key] = value;
       }
