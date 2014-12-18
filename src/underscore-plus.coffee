@@ -217,6 +217,7 @@ plus =
   mapObject: (object, iterator) ->
     newObject = {}
     for key, value of object
+      continue unless object.hasOwnProperty(key)
       [key, value] = iterator(key, value)
       newObject[key] = value
 
