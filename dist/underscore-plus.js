@@ -136,16 +136,17 @@
         return object;
       }
     },
-    deepExtend: function() {
-      var key, object, objects, result, target, value, _i, _len;
-      target = arguments[0], objects = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    deepExtend: function(target) {
+      var i, key, object, result;
       result = target;
-      for (_i = 0, _len = objects.length; _i < _len; _i++) {
-        object = objects[_i];
+      i = 0;
+      while (++i < arguments.length) {
+        object = arguments[i];
         if (isPlainObject(result) && isPlainObject(object)) {
           for (key in object) {
-            value = object[key];
-            result[key] = plus.deepExtend(result[key], value);
+            if (object.hasOwnProperty(key)) {
+              result[key] = plus.deepExtend(result[key], object[key]);
+            }
           }
         } else {
           result = plus.deepClone(object);

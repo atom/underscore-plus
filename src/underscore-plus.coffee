@@ -103,12 +103,15 @@ plus =
     else
       object
 
-  deepExtend: (target, objects...) ->
+  deepExtend: (target) ->
     result = target
-    for object in objects
+    i = 0
+    while ++i < arguments.length
+      object = arguments[i]
       if isPlainObject(result) and isPlainObject(object)
-        for key, value of object
-          result[key] = plus.deepExtend(result[key], value)
+        for key of object
+          if object.hasOwnProperty(key)
+            result[key] = plus.deepExtend(result[key], object[key])
       else
         result = plus.deepClone(object)
     result
