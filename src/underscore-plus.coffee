@@ -109,9 +109,8 @@ plus =
     while ++i < arguments.length
       object = arguments[i]
       if isPlainObject(result) and isPlainObject(object)
-        for key of object
-          if object.hasOwnProperty(key)
-            result[key] = plus.deepExtend(result[key], object[key])
+        for key in Object.keys(object)
+          result[key] = plus.deepExtend(result[key], object[key])
       else
         result = plus.deepClone(object)
     result
@@ -219,9 +218,8 @@ plus =
   # Returns a new object based with the key/values returned by the iterator.
   mapObject: (object, iterator) ->
     newObject = {}
-    for key, value of object
-      continue unless object.hasOwnProperty(key)
-      [key, value] = iterator(key, value)
+    for key in Object.keys(object)
+      [key, value] = iterator(key, object[key])
       newObject[key] = value
 
     newObject

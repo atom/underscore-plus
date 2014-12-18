@@ -137,16 +137,16 @@
       }
     },
     deepExtend: function(target) {
-      var i, key, object, result;
+      var i, key, object, result, _i, _len, _ref;
       result = target;
       i = 0;
       while (++i < arguments.length) {
         object = arguments[i];
         if (isPlainObject(result) && isPlainObject(object)) {
-          for (key in object) {
-            if (object.hasOwnProperty(key)) {
-              result[key] = plus.deepExtend(result[key], object[key]);
-            }
+          _ref = Object.keys(object);
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            key = _ref[_i];
+            result[key] = plus.deepExtend(result[key], object[key]);
           }
         } else {
           result = plus.deepClone(object);
@@ -279,14 +279,12 @@
       return inverted;
     },
     mapObject: function(object, iterator) {
-      var key, newObject, value, _ref;
+      var key, newObject, value, _i, _len, _ref, _ref1;
       newObject = {};
-      for (key in object) {
-        value = object[key];
-        if (!object.hasOwnProperty(key)) {
-          continue;
-        }
-        _ref = iterator(key, value), key = _ref[0], value = _ref[1];
+      _ref = Object.keys(object);
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        key = _ref[_i];
+        _ref1 = iterator(key, object[key]), key = _ref1[0], value = _ref1[1];
         newObject[key] = value;
       }
       return newObject;
