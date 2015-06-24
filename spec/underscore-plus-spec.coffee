@@ -16,7 +16,7 @@ describe "underscore extensions", ->
       object.method(1, 2, 3)
       expect(calls).toEqual [['advice', object, [1, 2, 3]], ['original', object, [1, 2, 3]]]
 
-    it "cancels the original method's invocation if the advice returns true", ->
+    it "cancels the original method's invocation if the advice returns false", ->
       _.adviseBefore object, 'method', -> false
       object.method(1, 2, 3)
       expect(calls).toEqual []
