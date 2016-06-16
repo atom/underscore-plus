@@ -33,7 +33,6 @@
     "grunt": "~0.4.1",
     "grunt-shell": "~0.2.2",
     "grunt-coffeelint": "0.0.6",
-    "temp": "~0.5.0",
-    "rimraf": "~2.1.4"
+    "rimraf": "~2.5.2"
   }
 }
