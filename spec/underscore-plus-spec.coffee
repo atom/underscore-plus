@@ -370,3 +370,25 @@ describe "underscore extensions", ->
           f: [4, 'abc']
 
       expect(_.deepClone(object)).toEqual object
+
+  describe "::escapeRegExp(string)", ->
+    it "returns a regular expression pattern that can will match the given string", ->
+      check = (source) ->
+        regex = new RegExp(_.escapeRegExp(source))
+        expect(source.match(regex)[0]).toBe(source)
+
+        regex = new RegExp(_.escapeRegExp(source), 'u')
+        expect(source.match(regex)[0]).toBe(source)
+
+      check('ab')
+      check('a[b')
+      check('a]b')
+      check('a(b')
+      check('a)b')
+      check('a-b')
+      check('[a-b]')
+      check('a{2}b{3}')
+      check('a|b')
+      check('([a-b])')
+      check('a?b?')
+      check('a...b...')
