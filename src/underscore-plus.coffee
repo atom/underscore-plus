@@ -135,7 +135,7 @@ plus =
 
   escapeRegExp: (string) ->
     if string
-      string.replace(/[\/\\^$*+?.()|[\]{}]/g, '\\$&')
+      string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
     else
       ''
 

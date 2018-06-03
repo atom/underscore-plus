@@ -377,9 +377,6 @@ describe "underscore extensions", ->
         regex = new RegExp(_.escapeRegExp(source))
         expect(source.match(regex)[0]).toBe(source)
 
-        regex = new RegExp(_.escapeRegExp(source), 'u')
-        expect(source.match(regex)[0]).toBe(source)
-
       check('ab')
       check('a[b')
       check('a]b')
@@ -392,3 +389,7 @@ describe "underscore extensions", ->
       check('([a-b])')
       check('a?b?')
       check('a...b...')
+
+    it "returns a pattern that can be used within a character class", ->
+      regex = new RegExp("[#{_.escapeRegExp("a-b")}]")
+      expect("-".match(regex)[0]).toBe('-')

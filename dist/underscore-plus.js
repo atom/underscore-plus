@@ -186,7 +186,7 @@
     },
     escapeRegExp: function(string) {
       if (string) {
-        return string.replace(/[\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
       } else {
         return '';
       }
