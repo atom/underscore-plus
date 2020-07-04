@@ -54,7 +54,7 @@ const shiftKeyMap = {
   '?': '/'
 };
 
-const splitKeyPath = function(keyPath) {
+function splitKeyPath(keyPath) {
   let startIndex = 0;
   const keyPathArray = [];
   if (keyPath == null) { return keyPathArray; }
