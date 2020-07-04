@@ -384,7 +384,7 @@ export function underscore(string) {
 
 export function valueForKeyPath(object, keyPath) {
   const keys = splitKeyPath(keyPath);
-  for (let key of Array.from(keys)) {
+  for (let key of keys) {
     object = object[key];
     if (object == null) { return; }
   }
