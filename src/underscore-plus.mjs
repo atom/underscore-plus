@@ -363,7 +363,7 @@ export function sum(array) {
 export function uncamelcase(string) {
   if (!string) { return ''; }
 
-  const result = string.replace(/([A-Z])|_+/g, function(match, letter) { if (letter == null) { letter = ''; } return ` ${letter}`; });
+  const result = string.replace(/([A-Z])|_+/g, (match, letter='') => ` ${letter}`);
   return capitalize(result.trim());
 }
 
