@@ -297,9 +297,7 @@ export function multiplyString(string, n) {
   return finalString;
 }
 
-export function pluralize(count, singular, plural) {
-  if (count == null) { count = 0; }
-  if (plural == null) { plural = singular+'s'; }
+export function pluralize(count=0, singular, plural=singular+'s') {
   if (count === 1) {
     return `${count} ${singular}`;
   } else {
