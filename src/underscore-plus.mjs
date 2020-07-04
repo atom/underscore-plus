@@ -1,12 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS202: Simplify dynamic range loops
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 export * from 'underscore'
 
 // import * as _ from 'underscore' // if we needed all
@@ -391,6 +382,7 @@ export function isEqual(a, b, aStack, bStack) {
 }
 
 export function isEqualForProperties(a, b, ...properties) {
+  // TODO is Array.from needed?
   for (let property of Array.from(properties)) {
     if (!_isEqual(a[property], b[property])) { return false; }
   }
@@ -463,3 +455,6 @@ function isEqual_(a, b, aStack=[], bStack=[]) {
   bStack.pop();
   return equal;
 }
+
+// TODO: Consider shorter variations of null checks:
+// https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md#ds207-consider-shorter-variations-of-null-checks
