@@ -226,11 +226,8 @@ export function humanizeKey(key, platform=process.platform) {
 //             `process.platform`).
 //
 // Returns a humanized representation of the keystroke.
-export function humanizeKeystroke(keystroke, platform) {
-  if (platform == null) { ({
-    platform
-  } = process); }
-  if (!keystroke) { return keystroke; }
+export function humanizeKeystroke(keystroke, platform=process.platform) {
+    if (!keystroke) { return keystroke; }
 
   const keystrokes = keystroke.split(' ');
   const humanizedKeystrokes = [];
