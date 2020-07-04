@@ -334,8 +334,7 @@ export function hasKeyPath(object, keyPath) {
   return true;
 }
 
-export function spliceWithArray(originalArray, start, length, insertedArray, chunkSize) {
-  if (chunkSize == null) { chunkSize = 100000; }
+export function spliceWithArray(originalArray, start, length, insertedArray, chunkSize=100000) {
   if (insertedArray.length < chunkSize) {
     originalArray.splice(start, length, ...insertedArray);
   } else {
