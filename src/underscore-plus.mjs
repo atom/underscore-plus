@@ -237,7 +237,7 @@ export function humanizeKeystroke(keystroke, platform) {
 
   const keystrokes = keystroke.split(' ');
   const humanizedKeystrokes = [];
-  for (keystroke of Array.from(keystrokes)) {
+  for (keystroke of keystrokes) {
     let keys = [];
     const splitKeystroke = keystroke.split('-');
     for (let index = 0; index < splitKeystroke.length; index++) {
