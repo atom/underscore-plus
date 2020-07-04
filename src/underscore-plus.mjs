@@ -195,10 +195,7 @@ export function humanizeEventName(eventName, eventDoc) {
   return `${namespaceDoc}: ${eventDoc}`;
 }
 
-export function humanizeKey(key, platform) {
-  if (platform == null) { ({
-    platform
-  } = process); }
+export function humanizeKey(key, platform=process.platform) {
   if (!key) { return key; }
 
   const modifierKeyMap = platform === 'darwin' ? macModifierKeyMap : nonMacModifierKeyMap;
