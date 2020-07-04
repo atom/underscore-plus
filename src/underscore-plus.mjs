@@ -7,7 +7,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const _ = require('underscore');
+import * as _ from 'underscore'
 
 const macModifierKeyMap = {
   cmd: '\u2318',
