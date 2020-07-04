@@ -11,7 +11,9 @@
   "main": "./lib/underscore-plus.js",
   "scripts": {
     "prepublish": "grunt clean coffee lint",
-    "test": "grunt test"
+    "test": "grunt test",
+    "babel": "env env BABEL_ENV=development babel src --out-dir lib",
+    "prepare": "npm run babel"
   },
   "repository": {
     "type": "git",
@@ -34,6 +36,12 @@
     "grunt": "~0.4.1",
     "grunt-shell": "~0.2.2",
     "grunt-coffeelint": "0.0.6",
-    "rimraf": "~2.5.2"
+    "rimraf": "~2.5.2",
+    "@babel/cli": "7.10.3",
+    "@babel/core": "7.10.3",
+    "@babel/plugin-proposal-export-namespace-from": "^7.10.4",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.10.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4"
   }
 }
