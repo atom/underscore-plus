@@ -327,9 +327,9 @@ export function setValueForKeyPath(object, keyPath, value) {
     object = object[key];
   }
   if (value != null) {
-    return object[keys.shift()] = value;
+    object[keys.shift()] = value;
   } else {
-    return delete object[keys.shift()];
+    delete object[keys.shift()];
   }
 }
 
