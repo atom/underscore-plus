@@ -335,7 +335,7 @@ export function setValueForKeyPath(object, keyPath, value) {
 
 export function hasKeyPath(object, keyPath) {
   const keys = splitKeyPath(keyPath);
-  for (let key of Array.from(keys)) {
+  for (let key of keys) {
     if (!object.hasOwnProperty(key)) { return false; }
     object = object[key];
   }
