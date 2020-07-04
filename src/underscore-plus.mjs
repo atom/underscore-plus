@@ -7,6 +7,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
+export * from 'underscore'
 import * as _ from 'underscore'
 
 const macModifierKeyMap = {
@@ -68,346 +69,344 @@ const splitKeyPath = function(keyPath) {
 
 const isPlainObject = value => _.isObject(value) && !_.isArray(value);
 
-var plus = {
-  adviseBefore(object, methodName, advice) {
-    const original = object[methodName];
-    return object[methodName] = function(...args) {
-      if (advice.apply(this, args) !== false) {
-        return original.apply(this, args);
-      }
-    };
-  },
-
-  camelize(string) {
-    if (string) {
-      return string.replace(/[_-]+(\w)/g, m => m[1].toUpperCase());
-    } else {
-      return '';
+export function adviseBefore(object, methodName, advice) {
+  const original = object[methodName];
+  return object[methodName] = function(...args) {
+    if (advice.apply(this, args) !== false) {
+      return original.apply(this, args);
     }
-  },
+  };
+}
 
-  capitalize(word) {
-    if (!word) { return ''; }
-
-    if (word.toLowerCase() === 'github') {
-      return 'GitHub';
-    } else {
-      return word[0].toUpperCase() + word.slice(1);
-    }
-  },
-
-  compactObject(object) {
-    const newObject = {};
-    for (let key in object) {
-      const value = object[key];
-      if (value != null) { newObject[key] = value; }
-    }
-    return newObject;
-  },
-
-  dasherize(string) {
-    if (!string) { return ''; }
-
-    string = string[0].toLowerCase() + string.slice(1);
-    return string.replace(/([A-Z])|(_)/g, function(m, letter) {
-      if (letter) {
-        return "-" + letter.toLowerCase();
-      } else {
-        return "-";
-      }
-    });
-  },
-
-  // Deep clones the given JSON object.
-  //
-  // `object` - The JSON object to clone.
-  //
-  // Returns a deep clone of the JSON object.
-  deepClone(object) {
-    if (_.isArray(object)) {
-      return object.map(value => plus.deepClone(value));
-    } else if (_.isObject(object) && !_.isFunction(object)) {
-      return plus.mapObject(object, (key, value) => [key, plus.deepClone(value)]);
-    } else {
-      return object;
-    }
-  },
-
-  deepExtend(target) {
-    let result = target;
-    let i = 0;
-    while (++i < arguments.length) {
-      const object = arguments[i];
-      if (isPlainObject(result) && isPlainObject(object)) {
-        for (let key of Array.from(Object.keys(object))) {
-          result[key] = plus.deepExtend(result[key], object[key]);
-        }
-      } else {
-        result = plus.deepClone(object);
-      }
-    }
-    return result;
-  },
-
-  deepContains(array, target) {
-    if (array == null) { return false; }
-    for (let object of Array.from(array)) {
-      if (_.isEqual(object, target)) { return true; }
-    }
-    return false;
-  },
-
-  endsWith(string, suffix) {
-    if (suffix == null) { suffix = ''; }
-    if (string) {
-      return string.indexOf(suffix, string.length - suffix.length) !== -1;
-    } else {
-      return false;
-    }
-  },
-
-  escapeAttribute(string) {
-    if (string) {
-      return string.replace(/"/g, '&quot;').replace(/\n/g, '').replace(/\\/g, '-');
-    } else {
-      return '';
-    }
-  },
-
-  escapeRegExp(string) {
-    if (string) {
-      return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    } else {
-      return '';
-    }
-  },
-
-  humanizeEventName(eventName, eventDoc) {
-    const [namespace, event]  = Array.from(eventName.split(':'));
-    if (event == null) { return plus.undasherize(namespace); }
-
-    const namespaceDoc = plus.undasherize(namespace);
-    if (eventDoc == null) { eventDoc = plus.undasherize(event); }
-
-    return `${namespaceDoc}: ${eventDoc}`;
-  },
-
-  humanizeKey(key, platform) {
-    if (platform == null) { ({
-      platform
-    } = process); }
-    if (!key) { return key; }
-
-    const modifierKeyMap = platform === 'darwin' ? macModifierKeyMap : nonMacModifierKeyMap;
-
-    if (modifierKeyMap[key]) {
-      return modifierKeyMap[key];
-    } else if ((key.length === 1) && (shiftKeyMap[key] != null)) {
-      return [modifierKeyMap.shift, shiftKeyMap[key]];
-    } else if ((key.length === 1) && (key === key.toUpperCase()) && (key.toUpperCase() !== key.toLowerCase())) {
-      return [modifierKeyMap.shift, key.toUpperCase()];
-    } else if ((key.length === 1) || /f[0-9]{1,2}/.test(key)) {
-      return key.toUpperCase();
-    } else {
-      if (platform === 'darwin') {
-        return key;
-      } else {
-        return plus.capitalize(key);
-      }
-    }
-  },
-
-  // Humanize the keystroke according to platform conventions. This method
-  // attempts to mirror the text the given keystroke would have if displayed in
-  // a system menu.
-  //
-  // keystroke - A String keystroke to humanize such as `ctrl-O`.
-  // platform  - An optional String platform to humanize for (default:
-  //             `process.platform`).
-  //
-  // Returns a humanized representation of the keystroke.
-  humanizeKeystroke(keystroke, platform) {
-    if (platform == null) { ({
-      platform
-    } = process); }
-    if (!keystroke) { return keystroke; }
-
-    const keystrokes = keystroke.split(' ');
-    const humanizedKeystrokes = [];
-    for (keystroke of Array.from(keystrokes)) {
-      let keys = [];
-      const splitKeystroke = keystroke.split('-');
-      for (let index = 0; index < splitKeystroke.length; index++) {
-        // Check for consecutive dashes such as cmd--
-        let key = splitKeystroke[index];
-        if ((key === '') && (splitKeystroke[index-1] === '')) { key = '-'; }
-        if (key) { keys.push(plus.humanizeKey(key, platform)); }
-      }
-
-      keys = _.uniq(_.flatten(keys));
-      if (platform === 'darwin') {
-        keys = keys.join('');
-      } else {
-        keys = keys.join('+');
-      }
-      humanizedKeystrokes.push(keys);
-    }
-
-    return humanizedKeystrokes.join(' ');
-  },
-
-  isSubset(potentialSubset, potentialSuperset) {
-    return _.every(potentialSubset, element => _.include(potentialSuperset, element));
-  },
-
-  losslessInvert(hash) {
-    const inverted = {};
-    for (let key in hash) {
-      const value = hash[key];
-      if (inverted[value] == null) { inverted[value] = []; }
-      inverted[value].push(key);
-    }
-    return inverted;
-  },
-
-  // Transform the given object into another object.
-  //
-  // `object` - The object to transform.
-  // `iterator` -
-  //   A function that takes `(key, value)` arguments and returns a
-  //   `[key, value]` tuple.
-  //
-  // Returns a new object based with the key/values returned by the iterator.
-  mapObject(object, iterator) {
-    const newObject = {};
-    for (let key of Array.from(Object.keys(object))) {
-      let value;
-      [key, value] = Array.from(iterator(key, object[key]));
-      newObject[key] = value;
-    }
-
-    return newObject;
-  },
-
-  multiplyString(string, n) {
-    let finalString = "";
-    let i = 0;
-    while (i < n) {
-      finalString += string;
-      i++;
-    }
-    return finalString;
-  },
-
-  pluralize(count, singular, plural) {
-    if (count == null) { count = 0; }
-    if (plural == null) { plural = singular+'s'; }
-    if (count === 1) {
-      return `${count} ${singular}`;
-    } else {
-      return `${count} ${plural}`;
-    }
-  },
-
-  remove(array, element) {
-    const index = array.indexOf(element);
-    if (index >= 0) { array.splice(index, 1); }
-    return array;
-  },
-
-  setValueForKeyPath(object, keyPath, value) {
-    const keys = splitKeyPath(keyPath);
-    while (keys.length > 1) {
-      const key = keys.shift();
-      if (object[key] == null) { object[key] = {}; }
-      object = object[key];
-    }
-    if (value != null) {
-      return object[keys.shift()] = value;
-    } else {
-      return delete object[keys.shift()];
-    }
-  },
-
-  hasKeyPath(object, keyPath) {
-    const keys = splitKeyPath(keyPath);
-    for (let key of Array.from(keys)) {
-      if (!object.hasOwnProperty(key)) { return false; }
-      object = object[key];
-    }
-    return true;
-  },
-
-  spliceWithArray(originalArray, start, length, insertedArray, chunkSize) {
-    if (chunkSize == null) { chunkSize = 100000; }
-    if (insertedArray.length < chunkSize) {
-      return originalArray.splice(start, length, ...Array.from(insertedArray));
-    } else {
-      originalArray.splice(start, length);
-      return (() => {
-        const result = [];
-        for (let chunkStart = 0, end = insertedArray.length, step = chunkSize, asc = step > 0; asc ? chunkStart <= end : chunkStart >= end; chunkStart += step) {
-          result.push(originalArray.splice(start + chunkStart, 0, ...Array.from(insertedArray.slice(chunkStart, chunkStart + chunkSize))));
-        }
-        return result;
-      })();
-    }
-  },
-
-  sum(array) {
-    let sum = 0;
-    for (let elt of Array.from(array)) { sum += elt; }
-    return sum;
-  },
-
-  uncamelcase(string) {
-    if (!string) { return ''; }
-
-    const result = string.replace(/([A-Z])|_+/g, function(match, letter) { if (letter == null) { letter = ''; } return ` ${letter}`; });
-    return plus.capitalize(result.trim());
-  },
-
-  undasherize(string) {
-    if (string) {
-      return string.split('-').map(plus.capitalize).join(' ');
-    } else {
-      return '';
-    }
-  },
-
-  underscore(string) {
-    if (!string) { return ''; }
-
-    string = string[0].toLowerCase() + string.slice(1);
-    return string.replace(/([A-Z])|-+/g, function(match, letter) { if (letter == null) { letter = ''; } return `_${letter.toLowerCase()}`; });
-  },
-
-  valueForKeyPath(object, keyPath) {
-    const keys = splitKeyPath(keyPath);
-    for (let key of Array.from(keys)) {
-      object = object[key];
-      if (object == null) { return; }
-    }
-    return object;
-  },
-
-  isEqual(a, b, aStack, bStack) {
-    if (_.isArray(aStack) && _.isArray(bStack)) {
-      return isEqual(a, b, aStack, bStack);
-    } else {
-      return isEqual(a, b);
-    }
-  },
-
-  isEqualForProperties(a, b, ...properties) {
-    for (let property of Array.from(properties)) {
-      if (!_.isEqual(a[property], b[property])) { return false; }
-    }
-    return true;
+export function camelize(string) {
+  if (string) {
+    return string.replace(/[_-]+(\w)/g, m => m[1].toUpperCase());
+  } else {
+    return '';
   }
-};
+}
 
-var isEqual = function(a, b, aStack, bStack) {
+export function capitalize(word) {
+  if (!word) { return ''; }
+
+  if (word.toLowerCase() === 'github') {
+    return 'GitHub';
+  } else {
+    return word[0].toUpperCase() + word.slice(1);
+  }
+}
+
+export function compactObject(object) {
+  const newObject = {};
+  for (let key in object) {
+    const value = object[key];
+    if (value != null) { newObject[key] = value; }
+  }
+  return newObject;
+}
+
+export function dasherize(string) {
+  if (!string) { return ''; }
+
+  string = string[0].toLowerCase() + string.slice(1);
+  return string.replace(/([A-Z])|(_)/g, function(m, letter) {
+    if (letter) {
+      return "-" + letter.toLowerCase();
+    } else {
+      return "-";
+    }
+  });
+}
+
+// Deep clones the given JSON object.
+//
+// `object` - The JSON object to clone.
+//
+// Returns a deep clone of the JSON object.
+export function deepClone(object) {
+  if (_.isArray(object)) {
+    return object.map(value => deepClone(value));
+  } else if (_.isObject(object) && !_.isFunction(object)) {
+    return mapObject(object, (key, value) => [key, deepClone(value)]);
+  } else {
+    return object;
+  }
+}
+
+export function deepExtend(target) {
+  let result = target;
+  let i = 0;
+  while (++i < arguments.length) {
+    const object = arguments[i];
+    if (isPlainObject(result) && isPlainObject(object)) {
+      for (let key of Array.from(Object.keys(object))) {
+        result[key] = deepExtend(result[key], object[key]);
+      }
+    } else {
+      result = deepClone(object);
+    }
+  }
+  return result;
+}
+
+export function deepContains(array, target) {
+  if (array == null) { return false; }
+  for (let object of Array.from(array)) {
+    if (_.isEqual(object, target)) { return true; }
+  }
+  return false;
+}
+
+export function endsWith(string, suffix) {
+  if (suffix == null) { suffix = ''; }
+  if (string) {
+    return string.indexOf(suffix, string.length - suffix.length) !== -1;
+  } else {
+    return false;
+  }
+}
+
+export function escapeAttribute(string) {
+  if (string) {
+    return string.replace(/"/g, '&quot;').replace(/\n/g, '').replace(/\\/g, '-');
+  } else {
+    return '';
+  }
+}
+
+export function escapeRegExp(string) {
+  if (string) {
+    return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  } else {
+    return '';
+  }
+}
+
+export function humanizeEventName(eventName, eventDoc) {
+  const [namespace, event]  = Array.from(eventName.split(':'));
+  if (event == null) { return undasherize(namespace); }
+
+  const namespaceDoc = undasherize(namespace);
+  if (eventDoc == null) { eventDoc = undasherize(event); }
+
+  return `${namespaceDoc}: ${eventDoc}`;
+}
+
+export function humanizeKey(key, platform) {
+  if (platform == null) { ({
+    platform
+  } = process); }
+  if (!key) { return key; }
+
+  const modifierKeyMap = platform === 'darwin' ? macModifierKeyMap : nonMacModifierKeyMap;
+
+  if (modifierKeyMap[key]) {
+    return modifierKeyMap[key];
+  } else if ((key.length === 1) && (shiftKeyMap[key] != null)) {
+    return [modifierKeyMap.shift, shiftKeyMap[key]];
+  } else if ((key.length === 1) && (key === key.toUpperCase()) && (key.toUpperCase() !== key.toLowerCase())) {
+    return [modifierKeyMap.shift, key.toUpperCase()];
+  } else if ((key.length === 1) || /f[0-9]{1,2}/.test(key)) {
+    return key.toUpperCase();
+  } else {
+    if (platform === 'darwin') {
+      return key;
+    } else {
+      return capitalize(key);
+    }
+  }
+}
+
+// Humanize the keystroke according to platform conventions. This method
+// attempts to mirror the text the given keystroke would have if displayed in
+// a system menu.
+//
+// keystroke - A String keystroke to humanize such as `ctrl-O`.
+// platform  - An optional String platform to humanize for (default:
+//             `process.platform`).
+//
+// Returns a humanized representation of the keystroke.
+export function humanizeKeystroke(keystroke, platform) {
+  if (platform == null) { ({
+    platform
+  } = process); }
+  if (!keystroke) { return keystroke; }
+
+  const keystrokes = keystroke.split(' ');
+  const humanizedKeystrokes = [];
+  for (keystroke of Array.from(keystrokes)) {
+    let keys = [];
+    const splitKeystroke = keystroke.split('-');
+    for (let index = 0; index < splitKeystroke.length; index++) {
+      // Check for consecutive dashes such as cmd--
+      let key = splitKeystroke[index];
+      if ((key === '') && (splitKeystroke[index-1] === '')) { key = '-'; }
+      if (key) { keys.push(humanizeKey(key, platform)); }
+    }
+
+    keys = _.uniq(_.flatten(keys));
+    if (platform === 'darwin') {
+      keys = keys.join('');
+    } else {
+      keys = keys.join('+');
+    }
+    humanizedKeystrokes.push(keys);
+  }
+
+  return humanizedKeystrokes.join(' ');
+}
+
+export function isSubset(potentialSubset, potentialSuperset) {
+  return _.every(potentialSubset, element => _.include(potentialSuperset, element));
+}
+
+export function losslessInvert(hash) {
+  const inverted = {};
+  for (let key in hash) {
+    const value = hash[key];
+    if (inverted[value] == null) { inverted[value] = []; }
+    inverted[value].push(key);
+  }
+  return inverted;
+}
+
+// Transform the given object into another object.
+//
+// `object` - The object to transform.
+// `iterator` -
+//   A function that takes `(key, value)` arguments and returns a
+//   `[key, value]` tuple.
+//
+// Returns a new object based with the key/values returned by the iterator.
+export function mapObject(object, iterator) {
+  const newObject = {};
+  for (let key of Array.from(Object.keys(object))) {
+    let value;
+    [key, value] = Array.from(iterator(key, object[key]));
+    newObject[key] = value;
+  }
+
+  return newObject;
+}
+
+export function multiplyString(string, n) {
+  let finalString = "";
+  let i = 0;
+  while (i < n) {
+    finalString += string;
+    i++;
+  }
+  return finalString;
+}
+
+export function pluralize(count, singular, plural) {
+  if (count == null) { count = 0; }
+  if (plural == null) { plural = singular+'s'; }
+  if (count === 1) {
+    return `${count} ${singular}`;
+  } else {
+    return `${count} ${plural}`;
+  }
+}
+
+export function remove(array, element) {
+  const index = array.indexOf(element);
+  if (index >= 0) { array.splice(index, 1); }
+  return array;
+}
+
+export function setValueForKeyPath(object, keyPath, value) {
+  const keys = splitKeyPath(keyPath);
+  while (keys.length > 1) {
+    const key = keys.shift();
+    if (object[key] == null) { object[key] = {}; }
+    object = object[key];
+  }
+  if (value != null) {
+    return object[keys.shift()] = value;
+  } else {
+    return delete object[keys.shift()];
+  }
+}
+
+export function hasKeyPath(object, keyPath) {
+  const keys = splitKeyPath(keyPath);
+  for (let key of Array.from(keys)) {
+    if (!object.hasOwnProperty(key)) { return false; }
+    object = object[key];
+  }
+  return true;
+}
+
+export function spliceWithArray(originalArray, start, length, insertedArray, chunkSize) {
+  if (chunkSize == null) { chunkSize = 100000; }
+  if (insertedArray.length < chunkSize) {
+    return originalArray.splice(start, length, ...Array.from(insertedArray));
+  } else {
+    originalArray.splice(start, length);
+    return (() => {
+      const result = [];
+      for (let chunkStart = 0, end = insertedArray.length, step = chunkSize, asc = step > 0; asc ? chunkStart <= end : chunkStart >= end; chunkStart += step) {
+        result.push(originalArray.splice(start + chunkStart, 0, ...Array.from(insertedArray.slice(chunkStart, chunkStart + chunkSize))));
+      }
+      return result;
+    })();
+  }
+}
+
+export function sum(array) {
+  let sum = 0;
+  for (let elt of Array.from(array)) { sum += elt; }
+  return sum;
+}
+
+export function uncamelcase(string) {
+  if (!string) { return ''; }
+
+  const result = string.replace(/([A-Z])|_+/g, function(match, letter) { if (letter == null) { letter = ''; } return ` ${letter}`; });
+  return capitalize(result.trim());
+}
+
+export function undasherize(string) {
+  if (string) {
+    return string.split('-').map(capitalize).join(' ');
+  } else {
+    return '';
+  }
+}
+
+export function underscore(string) {
+  if (!string) { return ''; }
+
+  string = string[0].toLowerCase() + string.slice(1);
+  return string.replace(/([A-Z])|-+/g, function(match, letter) { if (letter == null) { letter = ''; } return `_${letter.toLowerCase()}`; });
+}
+
+export function valueForKeyPath(object, keyPath) {
+  const keys = splitKeyPath(keyPath);
+  for (let key of Array.from(keys)) {
+    object = object[key];
+    if (object == null) { return; }
+  }
+  return object;
+}
+
+export function isEqual(a, b, aStack, bStack) {
+  if (_.isArray(aStack) && _.isArray(bStack)) {
+    return isEqual(a, b, aStack, bStack);
+  } else {
+    return isEqual(a, b);
+  }
+}
+
+export function isEqualForProperties(a, b, ...properties) {
+  for (let property of Array.from(properties)) {
+    if (!_.isEqual(a[property], b[property])) { return false; }
+  }
+  return true;
+}
+
+isEqual = function(a, b, aStack, bStack) {
   if (aStack == null) { aStack = []; }
   if (bStack == null) { bStack = []; }
   if (a === b) { return _.isEqual(a, b); }
@@ -475,5 +474,3 @@ var isEqual = function(a, b, aStack, bStack) {
   bStack.pop();
   return equal;
 };
-
-module.exports = _.extend({}, _, plus);
