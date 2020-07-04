@@ -67,7 +67,7 @@ function splitKeyPath(keyPath) {
   }
   keyPathArray.push(keyPath.substr(startIndex, keyPath.length));
   return keyPathArray;
-};
+}
 
 const isPlainObject = value => isObject(value) && !isArray(value);
 
@@ -141,7 +141,8 @@ export function deepExtend(target) {
   while (++i < arguments.length) {
     const object = arguments[i];
     if (isPlainObject(result) && isPlainObject(object)) {
-      for (let key of Array.from(Object.keys(object))) {
+      const keys = Object.keys(object)
+      for (let key of keys) {
         result[key] = deepExtend(result[key], object[key]);
       }
     } else {
