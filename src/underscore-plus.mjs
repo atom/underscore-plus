@@ -345,13 +345,13 @@ export function hasKeyPath(object, keyPath) {
 export function spliceWithArray(originalArray, start, length, insertedArray, chunkSize) {
   if (chunkSize == null) { chunkSize = 100000; }
   if (insertedArray.length < chunkSize) {
-    return originalArray.splice(start, length, ...Array.from(insertedArray));
+    return originalArray.splice(start, length, ...insertedArray);
   } else {
     originalArray.splice(start, length);
     return (() => {
       const result = [];
       for (let chunkStart = 0, end = insertedArray.length, step = chunkSize, asc = step > 0; asc ? chunkStart <= end : chunkStart >= end; chunkStart += step) {
-        result.push(originalArray.splice(start + chunkStart, 0, ...Array.from(insertedArray.slice(chunkStart, chunkStart + chunkSize))));
+        result.push(originalArray.splice(start + chunkStart, 0, ...insertedArray.slice(chunkStart, chunkStart + chunkSize)));
       }
       return result;
     })();
