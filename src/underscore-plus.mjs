@@ -8,7 +8,9 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 export * from 'underscore'
-import * as _ from 'underscore'
+
+// import * as _ from 'underscore' // if we needed all
+import {every, flatten, has, include, isArray, isElement, isFunction, isObject, isRegExp, uniq} from "underscore";
 
 const macModifierKeyMap = {
   cmd: '\u2318',
@@ -67,7 +69,7 @@ const splitKeyPath = function(keyPath) {
   return keyPathArray;
 };
 
-const isPlainObject = value => _.isObject(value) && !_.isArray(value);
+const isPlainObject = value => isObject(value) && !isArray(value);
 
 export function adviseBefore(object, methodName, advice) {
   const original = object[methodName];
@@ -124,9 +126,9 @@ export function dasherize(string) {
 //
 // Returns a deep clone of the JSON object.
 export function deepClone(object) {
-  if (_.isArray(object)) {
+  if (isArray(object)) {
     return object.map(value => deepClone(value));
-  } else if (_.isObject(object) && !_.isFunction(object)) {
+  } else if (isObject(object) && !isFunction(object)) {
     return mapObject(object, (key, value) => [key, deepClone(value)]);
   } else {
     return object;
@@ -152,7 +154,7 @@ export function deepExtend(target) {
 export function deepContains(array, target) {
   if (array == null) { return false; }
   for (let object of Array.from(array)) {
-    if (_.isEqual(object, target)) { return true; }
+    if (isEqual(object, target)) { return true; }
   }
   return false;
 }
@@ -244,7 +246,7 @@ export function humanizeKeystroke(keystroke, platform) {
       if (key) { keys.push(humanizeKey(key, platform)); }
     }
 
-    keys = _.uniq(_.flatten(keys));
+    keys = uniq(flatten(keys));
     if (platform === 'darwin') {
       keys = keys.join('');
     } else {
@@ -257,7 +259,7 @@ export function humanizeKeystroke(keystroke, platform) {
 }
 
 export function isSubset(potentialSubset, potentialSuperset) {
-  return _.every(potentialSubset, element => _.include(potentialSuperset, element));
+  return every(potentialSubset, element => include(potentialSuperset, element));
 }
 
 export function losslessInvert(hash) {
@@ -392,7 +394,7 @@ export function valueForKeyPath(object, keyPath) {
 }
 
 export function isEqual(a, b, aStack, bStack) {
-  if (_.isArray(aStack) && _.isArray(bStack)) {
+  if (isArray(aStack) && isArray(bStack)) {
     return isEqual(a, b, aStack, bStack);
   } else {
     return isEqual(a, b);
@@ -401,7 +403,7 @@ export function isEqual(a, b, aStack, bStack) {
 
 export function isEqualForProperties(a, b, ...properties) {
   for (let property of Array.from(properties)) {
-    if (!_.isEqual(a[property], b[property])) { return false; }
+    if (!isEqual(a[property], b[property])) { return false; }
   }
   return true;
 }
@@ -409,8 +411,8 @@ export function isEqualForProperties(a, b, ...properties) {
 isEqual = function(a, b, aStack, bStack) {
   if (aStack == null) { aStack = []; }
   if (bStack == null) { bStack = []; }
-  if (a === b) { return _.isEqual(a, b); }
-  if (_.isFunction(a) || _.isFunction(b)) { return _.isEqual(a, b); }
+  if (a === b) { return isEqual(a, b); }
+  if (isFunction(a) || isFunction(b)) { return isEqual(a, b); }
 
   let stackIndex = aStack.length;
   while (stackIndex--) {
@@ -420,11 +422,11 @@ isEqual = function(a, b, aStack, bStack) {
   bStack.push(b);
 
   let equal = false;
-  if (_.isFunction(a?.isEqual)) {
+  if (isFunction(a?.isEqual)) {
     equal = a.isEqual(b, aStack, bStack);
-  } else if (_.isFunction(b?.isEqual)) {
+  } else if (isFunction(b?.isEqual)) {
     equal = b.isEqual(a, bStack, aStack);
-  } else if (_.isArray(a) && _.isArray(b) && (a.length === b.length)) {
+  } else if (isArray(a) && isArray(b) && (a.length === b.length)) {
     equal = true;
     for (let i = 0; i < a.length; i++) {
       const aElement = a[i];
@@ -433,15 +435,15 @@ isEqual = function(a, b, aStack, bStack) {
         break;
       }
     }
-  } else if (_.isRegExp(a) && _.isRegExp(b)) {
-    equal = _.isEqual(a, b);
-  } else if (_.isElement(a) && _.isElement(b)) {
+  } else if (isRegExp(a) && isRegExp(b)) {
+    equal = isEqual(a, b);
+  } else if (isElement(a) && isElement(b)) {
     equal = a === b;
-  } else if (_.isObject(a) && _.isObject(b)) {
+  } else if (isObject(a) && isObject(b)) {
     const aCtor = a.constructor;
     const bCtor = b.constructor;
-    const aCtorValid = _.isFunction(aCtor) && aCtor instanceof aCtor;
-    const bCtorValid = _.isFunction(bCtor) && bCtor instanceof bCtor;
+    const aCtorValid = isFunction(aCtor) && aCtor instanceof aCtor;
+    const bCtorValid = isFunction(bCtor) && bCtor instanceof bCtor;
     if ((aCtor !== bCtor) && !(aCtorValid && bCtorValid)) {
       equal = false;
     } else {
@@ -450,9 +452,9 @@ isEqual = function(a, b, aStack, bStack) {
       equal = true;
       for (key in a) {
         const aValue = a[key];
-        if (!_.has(a, key)) { continue; }
+        if (!has(a, key)) { continue; }
         aKeyCount++;
-        if (!_.has(b, key) || !isEqual(aValue, b[key], aStack, bStack)) {
+        if (!has(b, key) || !isEqual(aValue, b[key], aStack, bStack)) {
           equal = false;
           break;
         }
@@ -461,13 +463,13 @@ isEqual = function(a, b, aStack, bStack) {
         let bKeyCount = 0;
         for (key in b) {
           const bValue = b[key];
-          if (_.has(b, key)) { bKeyCount++; }
+          if (has(b, key)) { bKeyCount++; }
         }
         equal = aKeyCount === bKeyCount;
       }
     }
   } else {
-    equal = _.isEqual(a, b);
+    equal = isEqual(a, b);
   }
 
   aStack.pop();
