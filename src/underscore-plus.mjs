@@ -408,9 +408,7 @@ export function isEqualForProperties(a, b, ...properties) {
   return true;
 }
 
-isEqual = function(a, b, aStack, bStack) {
-  if (aStack == null) { aStack = []; }
-  if (bStack == null) { bStack = []; }
+isEqual = function(a, b, aStack=[], bStack=[]) {
   if (a === b) { return isEqual(a, b); }
   if (isFunction(a) || isFunction(b)) { return isEqual(a, b); }
 
