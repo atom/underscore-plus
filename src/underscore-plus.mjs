@@ -356,7 +356,7 @@ export function spliceWithArray(originalArray, start, length, insertedArray, chu
 
 export function sum(array) {
   let sum = 0;
-  for (let elt of Array.from(array)) { sum += elt; }
+  for (let elt of array) { sum += elt; }
   return sum;
 }
 
