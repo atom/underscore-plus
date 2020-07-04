@@ -379,7 +379,7 @@ export function underscore(string) {
   if (!string) { return ''; }
 
   string = string[0].toLowerCase() + string.slice(1);
-  return string.replace(/([A-Z])|-+/g, function(match, letter) { if (letter == null) { letter = ''; } return `_${letter.toLowerCase()}`; });
+  return string.replace(/([A-Z])|-+/g, (match, letter='') => `_${letter.toLowerCase()}`);
 }
 
 export function valueForKeyPath(object, keyPath) {
