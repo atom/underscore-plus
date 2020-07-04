@@ -283,9 +283,10 @@ export function losslessInvert(hash) {
 // Returns a new object based with the key/values returned by the iterator.
 export function mapObject(object, iterator) {
   const newObject = {};
-  for (let key of Array.from(Object.keys(object))) {
+  const keys = Object.keys(object)
+  for (let key of keys) {
     let value;
-    [key, value] = Array.from(iterator(key, object[key]));
+    [key, value] = iterator(key, object[key]);
     newObject[key] = value;
   }
 
