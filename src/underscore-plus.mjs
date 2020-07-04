@@ -10,7 +10,7 @@
 export * from 'underscore'
 
 // import * as _ from 'underscore' // if we needed all
-import {every, flatten, has, include, isArray, isElement, isFunction, isObject, isRegExp, uniq} from "underscore";
+import {every, flatten, has, include, isArray, isElement, isEqual as _isEqual, isFunction, isObject, isRegExp, uniq} from "underscore";
 
 const macModifierKeyMap = {
   cmd: '\u2318',
@@ -154,7 +154,7 @@ export function deepExtend(target) {
 export function deepContains(array, target) {
   if (array == null) { return false; }
   for (let object of Array.from(array)) {
-    if (isEqual(object, target)) { return true; }
+    if (_isEqual(object, target)) { return true; }
   }
   return false;
 }
@@ -395,22 +395,22 @@ export function valueForKeyPath(object, keyPath) {
 
 export function isEqual(a, b, aStack, bStack) {
   if (isArray(aStack) && isArray(bStack)) {
-    return isEqual(a, b, aStack, bStack);
+    return isEqual_(a, b, aStack, bStack);
   } else {
-    return isEqual(a, b);
+    return isEqual_(a, b);
   }
 }
 
 export function isEqualForProperties(a, b, ...properties) {
   for (let property of Array.from(properties)) {
-    if (!isEqual(a[property], b[property])) { return false; }
+    if (!_isEqual(a[property], b[property])) { return false; }
   }
   return true;
 }
 
-isEqual = function(a, b, aStack=[], bStack=[]) {
-  if (a === b) { return isEqual(a, b); }
-  if (isFunction(a) || isFunction(b)) { return isEqual(a, b); }
+function isEqual_(a, b, aStack=[], bStack=[]) {
+  if (a === b) { return _isEqual(a, b); }
+  if (isFunction(a) || isFunction(b)) { return _isEqual(a, b); }
 
   let stackIndex = aStack.length;
   while (stackIndex--) {
@@ -428,13 +428,13 @@ isEqual = function(a, b, aStack=[], bStack=[]) {
     equal = true;
     for (let i = 0; i < a.length; i++) {
       const aElement = a[i];
-      if (!isEqual(aElement, b[i], aStack, bStack)) {
+      if (!isEqual_(aElement, b[i], aStack, bStack)) {
         equal = false;
         break;
       }
     }
   } else if (isRegExp(a) && isRegExp(b)) {
-    equal = isEqual(a, b);
+    equal = _isEqual(a, b);
   } else if (isElement(a) && isElement(b)) {
     equal = a === b;
   } else if (isObject(a) && isObject(b)) {
@@ -452,7 +452,7 @@ isEqual = function(a, b, aStack=[], bStack=[]) {
         const aValue = a[key];
         if (!has(a, key)) { continue; }
         aKeyCount++;
-        if (!has(b, key) || !isEqual(aValue, b[key], aStack, bStack)) {
+        if (!has(b, key) || !isEqual_(aValue, b[key], aStack, bStack)) {
           equal = false;
           break;
         }
@@ -467,10 +467,10 @@ isEqual = function(a, b, aStack=[], bStack=[]) {
       }
     }
   } else {
-    equal = isEqual(a, b);
+    equal = _isEqual(a, b);
   }
 
   aStack.pop();
   bStack.pop();
   return equal;
-};
+}
