@@ -154,7 +154,7 @@ export function deepExtend(target) {
 
 export function deepContains(array, target) {
   if (array == null) { return false; }
-  for (let object of Array.from(array)) {
+  for (let object of array) {
     if (_isEqual(object, target)) { return true; }
   }
   return false;
