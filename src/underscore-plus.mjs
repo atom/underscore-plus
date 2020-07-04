@@ -186,7 +186,7 @@ export function escapeRegExp(string) {
 }
 
 export function humanizeEventName(eventName, eventDoc) {
-  const [namespace, event]  = Array.from(eventName.split(':'));
+  const [namespace, event]  = eventName.split(':');
   if (event == null) { return undasherize(namespace); }
 
   const namespaceDoc = undasherize(namespace);
