@@ -348,7 +348,7 @@ export function spliceWithArray(originalArray, start, length, insertedArray, chu
     originalArray.splice(start, length, ...insertedArray);
   } else {
       originalArray.splice(start, length);
-      for (let chunkStart = 0, end = insertedArray.length, step = chunkSize, asc = step > 0; asc ? chunkStart <= end : chunkStart >= end; chunkStart += step) {
+      for (let chunkStart = 0, end = insertedArray.length;  chunkStart <= end; chunkStart += chunkSize) {
         originalArray.splice(start + chunkStart, 0, ...insertedArray.slice(chunkStart, chunkStart + chunkSize));
       }
   }
