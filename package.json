@@ -15,11 +15,10 @@
     "test": "jasmine-focused --captureExceptions --coffee spec",
     "lint": "coffeelint spec/*.coffee",
     "bower": "shx cp lib/* dist",
-    "babel": "npm run clean && shx cp -r src lib && env NODE_ENV=development env BABEL_ENV=development babel lib --out-dir lib",
-    "dev": "npm run clean && env NODE_ENV=development env BABEL_ENV=production rollup -c -w",
-    "build": "npm run clean && env NODE_ENV=production env BABEL_ENV=production rollup -c ",
-    "prepare": "npm run build && npm run bower",
-    "prepublish": "npm run clean && npm run build && npm run bower"
+    "babel": "npm run clean && shx cp -r src lib && cross-env NODE_ENV=development cross-env BABEL_ENV=development babel lib --out-dir lib",
+    "dev": "npm run clean && cross-env NODE_ENV=development cross-env BABEL_ENV=production rollup -c -w",
+    "build": "npm run clean && cross-env NODE_ENV=production cross-env BABEL_ENV=production rollup -c ",
+    "prepare": "npm run clean && npm run build && npm run bower"
   },
   "repository": {
     "type": "git",
