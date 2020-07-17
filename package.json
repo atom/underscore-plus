@@ -14,8 +14,8 @@
     "clean": "shx rm -rf lib",
     "test": "jasmine-focused --captureExceptions --coffee spec",
     "lint": "coffeelint spec/*.coffee",
-    "bower": "shx cp lib/* dist",
-    "babel": "npm run clean && shx cp -r src lib && cross-env NODE_ENV=development cross-env BABEL_ENV=development babel lib --out-dir lib",
+    "bower": "shx mkdir -p dist && shx cp -r lib/*.js ./dist",
+    "babel": "npm run clean && shx cp -r src lib && cross-env NODE_ENV=development cross-env BABEL_ENV=development babel lib --out-dir lib && shx rm -f lib/*.mjs",
     "dev": "npm run clean && cross-env NODE_ENV=development cross-env BABEL_ENV=production rollup -c -w",
     "build": "npm run clean && cross-env NODE_ENV=production cross-env BABEL_ENV=production rollup -c ",
     "prepare": "npm run clean && npm run build && npm run bower"
