@@ -15,9 +15,9 @@
     "test": "jasmine-focused --captureExceptions --coffee spec",
     "lint": "coffeelint spec/*.coffee",
     "bower": "shx mkdir -p dist && shx cp -r lib/*.js ./dist",
-    "babel": "npm run clean && shx cp -r src lib && cross-env NODE_ENV=development cross-env BABEL_ENV=development babel lib --out-dir lib && shx rm -f lib/*.mjs",
-    "dev": "npm run clean && cross-env NODE_ENV=development cross-env BABEL_ENV=production rollup -c -w",
-    "build": "npm run clean && cross-env NODE_ENV=production cross-env BABEL_ENV=production rollup -c ",
+    "babel": "npm run clean && shx cp -r src lib && cross-env NODE_ENV=development cross-env BABEL_KEEP_MODULES=false babel lib --out-dir lib && shx rm -f lib/*.mjs",
+    "dev": "npm run clean && cross-env NODE_ENV=development cross-env BABEL_KEEP_MODULES=true rollup -c -w",
+    "build": "npm run clean && cross-env NODE_ENV=production cross-env BABEL_KEEP_MODULES=true rollup -c ",
     "prepare": "npm run clean && npm run build && npm run bower"
   },
   "repository": {
@@ -35,12 +35,8 @@
   },
   "devDependencies": {
     "@babel/cli": "7.10.3",
-    "@babel/core": "7.10.3",
-    "@babel/plugin-proposal-export-namespace-from": "^7.10.4",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
-    "@babel/plugin-proposal-optional-chaining": "^7.10.4",
-    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
     "@types/underscore": "^1.10.3",
+    "babel-preset-atomic": "^4.2.0",
     "coffeelint": "^2.1.0",
     "cross-env": "^7.0.2",
     "jasmine-focused": "1.x",
