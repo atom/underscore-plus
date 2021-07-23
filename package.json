@@ -9,7 +9,8 @@
     }
   ],
   "main": "./lib/underscore-plus.js",
-  "es": "./modules/underscore-plus.js",
+  "module": "./modules/underscore-plus.js",
+  "source": "./src/underscore-plus.mjs",
   "scripts": {
     "clean": "shx rm -rf lib",
     "test": "jasmine-focused --captureExceptions --coffee spec",
