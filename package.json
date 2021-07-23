@@ -31,7 +31,7 @@
     "underscore"
   ],
   "dependencies": {
-    "underscore": "^1.10.2"
+    "underscore": "^1.13.1"
   },
   "devDependencies": {
     "@babel/cli": "7.10.3",
