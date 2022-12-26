@@ -1,7 +1,7 @@
-export * from 'underscore'
+export * from 'underscore/modules/index.js' // import es module to allow bundling
 
-// import * as _ from 'underscore' // if we needed all
-import {every, flatten, has, include, isArray, isElement, isEqual as _isEqual, isFunction, isObject, isRegExp, uniq} from "underscore";
+// import * as _ from 'underscore/modules/index.js' // if we needed all
+import {every, flatten, has, include, isArray, isElement, isEqual as _isEqual, isFunction, isObject, isRegExp, uniq} from "underscore/modules/index.js";
 
 const macModifierKeyMap = {
   cmd: '\u2318',
